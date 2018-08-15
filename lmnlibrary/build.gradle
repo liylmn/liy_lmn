@@ -1,12 +1,11 @@
 apply plugin: 'com.android.library'
-
 android {
     signingConfigs {
     }
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
@@ -23,17 +22,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding{
-        enabled true
-    }
 
 
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //noinspection GradleCompatible
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //noinspection GradleCompatible
     implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     testImplementation "junit:junit:$rootProject.junitVersion"
     //retrofit
@@ -47,6 +45,8 @@ dependencies {
     compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
     //ButterKnife
     compile "com.jakewharton:butterknife:$rootProject.butterKnifeVersion"
+    //design
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
     //leak
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
@@ -58,8 +58,10 @@ dependencies {
     compile "pub.devrel:easypermissions:$rootProject.easypermissionVersion"
     //dagger
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
 
     //recyclerview
+    //noinspection GradleCompatible
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
 
 
@@ -69,7 +71,9 @@ dependencies {
     compile "org.greenrobot:eventbus:$rootProject.eventbus"
     compile "com.github.bumptech.glide:glide:$rootProject.glide"
 
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'//没有使用特殊Header，可以不加这行
 
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterKnifeVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+
+
 }

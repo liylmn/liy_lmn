@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.IntentFilter;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,12 +30,11 @@ import lmn.com.lmnlibrary.utils.KnifeUtil;
  * Created by admin on 2017/3/12.
  */
 
-public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatActivity implements UiCallback{
+public abstract class BaseActivity extends AppCompatActivity implements UiCallback{
     protected DataManager mDataManager;
     protected Context mContext;
     protected Dialog loadingDialog;
     protected Unbinder unbinder;
-    protected B viewDataBinding;
     private NetWorkChangeBroadcastReceiver receiver;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,16 +43,12 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
         mContext = getAppComponent().getContext();
         registerNetChangeReceiver();
         if (getLayoutId() > 0) {
-//            setContentView(getLayoutId());
-            initDatabinding();
+            setContentView(getLayoutId());
             unbinder = KnifeUtil.bind(this);
         }
-        initData(savedInstanceState);
+        initview();
+        initData();
         setListener();
-    }
-    @Override
-    public void initDatabinding() {
-        viewDataBinding = DataBindingUtil.setContentView(this,getLayoutId());
     }
     private void registerNetChangeReceiver() {
         receiver = new NetWorkChangeBroadcastReceiver(this);

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/liy_lmn.iml" filepath="$PROJECT_DIR$/liy_lmn.iml" />
+      <module fileurl="file://E:\testworkpace\liy_lmn-master\liy_lmn-master\liy_lmn.iml" filepath="E:\testworkpace\liy_lmn-master\liy_lmn-master\liy_lmn.iml" />
       <module fileurl="file://$PROJECT_DIR$/lmnlibrary/lmnlibrary.iml" filepath="$PROJECT_DIR$/lmnlibrary/lmnlibrary.iml" />
     </modules>
   </component>

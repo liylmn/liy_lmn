@@ -19,15 +19,16 @@ import lmn.com.lmnlibrary.R;
 public class DialogUtil {
     /**
      * 有取消回调的进度dialog
+     *
      * @param context
      * @param msg
      * @return
      */
     public static Dialog createLoadingDialog(Activity context, String msg, DialogInterface.OnCancelListener listener) {
-        final Dialog dialog = new Dialog(context , R.style.NoBackGroundDialog);
+        final Dialog dialog = new Dialog(context, R.style.NoBackGroundDialog);
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-        if(listener != null) dialog.setOnCancelListener(listener);
+        if (listener != null) dialog.setOnCancelListener(listener);
         Window window = dialog.getWindow();
         assert window != null;
         window.setGravity(Gravity.CENTER);
@@ -37,7 +38,7 @@ public class DialogUtil {
         View view = context.getLayoutInflater().inflate(
                 R.layout.loading_dialog, null);
         TextView tipTextView = (TextView) view.findViewById(R.id.tipTextView);// 提示文字
-        if(!TextUtils.isEmpty(msg)){
+        if (!TextUtils.isEmpty(msg)) {
             tipTextView.setText(msg);// 设置加载信息
         }
 
@@ -48,15 +49,15 @@ public class DialogUtil {
 
     /**
      * gif动画进度
-     * @param context
      *
+     * @param context
      * @return
      */
     public static Dialog createJDLoadingDialog(Activity context, DialogInterface.OnCancelListener listener) {
-        final Dialog dialog = new Dialog(context , R.style.NoBackGroundDialog);
+        final Dialog dialog = new Dialog(context, R.style.NoBackGroundDialog);
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-        if(listener != null) dialog.setOnCancelListener(listener);
+        if (listener != null) dialog.setOnCancelListener(listener);
         Window window = dialog.getWindow();
         assert window != null;
         window.setGravity(Gravity.CENTER);
@@ -68,5 +69,6 @@ public class DialogUtil {
         return dialog;
 
     }
+
 
 }

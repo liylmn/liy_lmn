@@ -8,8 +8,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0'
-        
 
+        classpath "com.tencent.bugly:tinker-support:1.1.2"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -29,11 +29,11 @@ task clean(type: Delete) {
 ext {
     // Sdk and tools
     minSdkVersion = 19
-    targetSdkVersion = 25
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.2'
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.1'
     // App dependencies
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '27.0.1'
     constraintVersion = '1.1.0'
     junitVersion = '4.12'
     retrofitVersion = '2.4.0'
@@ -42,7 +42,7 @@ ext {
     rxandroidVersion = '2.0.1'
     rxCacheVersion = '1.8.0-2.x'
     rxCacheGsonVersion = '0.0.3'
-    butterKnifeVersion = '8.5.1'
+    butterKnifeVersion = '8.4.0'
     arouterVersion = '1.2.0'
     arouterCompilerVersion = '1.1.1'
     easypermissionVersion = '0.3.1'
