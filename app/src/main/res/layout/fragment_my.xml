@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lmn.widget.CustomTitleBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    app:left_btn_visible="false"
+    app:title_text="我的"
+    app:title_visible="true">
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.zhy.autolayout.AutoRelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="88px"
+                    android:layout_marginLeft="@dimen/dimen_30px"
+                    android:gravity="center"
+                    android:text="@string/my_number"
+                    android:textColor="@color/black_font"
+                    android:textSize="@dimen/dimen_30px" />
+
+                <TextView
+                    android:id="@+id/tv_my_number"
+                    android:layout_width="match_parent"
+                    android:paddingRight="@dimen/dimen_30px"
+                    android:layout_height="88px"
+                    android:layout_toRightOf="@+id/tv_my_number"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/black_font"
+                    android:textSize="@dimen/dimen_30px"
+                    android:text="13521579524" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="88px"
+                    android:layout_marginLeft="@dimen/dimen_30px"
+                    android:gravity="center"
+                    android:text="@string/my_name"
+                    android:textColor="@color/black_font"
+                    android:textSize="@dimen/dimen_30px"
+                    android:layout_below="@+id/tv_my_number"/>
+
+                <TextView
+                    android:id="@+id/tv_my_name"
+                    android:layout_width="match_parent"
+                    android:paddingRight="@dimen/dimen_30px"
+                    android:layout_height="88px"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/black_font"
+                    android:textSize="@dimen/dimen_30px"
+                    android:text="张安顺"
+                    android:layout_below="@+id/tv_my_number"/>
+
+                <TextView
+                    android:id="@+id/my_modify_psw"
+                    android:layout_width="match_parent"
+                    android:layout_height="88px"
+                    android:layout_marginLeft="@dimen/dimen_30px"
+                    android:gravity="center_vertical"
+                    android:text="@string/my_modify_psw"
+                    android:textColor="@color/black_font"
+                    android:textSize="@dimen/dimen_30px"
+                    android:layout_below="@+id/tv_my_name"/>
+                <TextView
+                    android:id="@+id/my_leave_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="88px"
+                    android:layout_marginLeft="@dimen/dimen_30px"
+                    android:gravity="center_vertical"
+                    android:text="@string/my_leave_message"
+                    android:textColor="@color/black_font"
+                    android:textSize="@dimen/dimen_30px"
+                    android:layout_below="@+id/my_modify_psw"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_below="@+id/tv_my_number"
+                    android:layout_marginLeft="@dimen/dimen_10px"
+                    android:layout_marginRight="@dimen/dimen_10px"
+                    android:background="@color/gray_bg"></View>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_below="@+id/tv_my_name"
+                    android:layout_marginLeft="@dimen/dimen_10px"
+                    android:layout_marginRight="@dimen/dimen_10px"
+                    android:background="@color/gray_bg"></View>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_below="@+id/my_modify_psw"
+                    android:layout_marginLeft="@dimen/dimen_10px"
+                    android:layout_marginRight="@dimen/dimen_10px"
+                    android:background="@color/gray_bg"></View>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:layout_below="@+id/my_leave_message"
+                    android:layout_marginLeft="@dimen/dimen_10px"
+                    android:layout_marginRight="@dimen/dimen_10px"
+                    android:background="@color/gray_bg"></View>
+
+            </com.zhy.autolayout.AutoRelativeLayout>
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/my_btn_back"
+            android:layout_width="match_parent"
+            android:layout_height="88px"
+            android:background="@drawable/bg_btn_login_selected"
+            android:text="@string/my_btn_back"
+            android:textColor="@color/color_ffffff"
+            android:textSize="@dimen/dimen_30px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dimen_90px"
+            android:layout_marginLeft="@dimen/dimen_40px"
+            android:layout_marginRight="@dimen/dimen_40px"/>
+    </com.zhy.autolayout.AutoRelativeLayout>
+</com.lmn.widget.CustomTitleBar>

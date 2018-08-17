@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lmn.widget.CustomTitleBar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    app:left_btn_visible="true"
+    app:title_text=""
+    app:title_visible="true"
+    >
+     <com.zhy.autolayout.AutoLinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:orientation="vertical">
+    <FrameLayout
+        android:id="@+id/home_title_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingTop="10dp">
+
+        <View
+            android:id="@+id/home_title_bar_bg_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/home_title_bar_search_corner_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/search_icon" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="3dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="搜索"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+    </FrameLayout>
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="原理图"
+         android:layout_marginLeft="30px"
+         android:textSize="35px"
+         android:textColor="@color/color_333333"/>
+     <ImageView
+         android:layout_width="match_parent"
+         android:layout_height="500px"
+         android:layout_margin="40px"
+         android:background="@mipmap/ic_launcher"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="原因"
+        android:layout_marginLeft="30px"
+        android:textSize="35px"
+        android:textColor="@color/color_333333"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="50px"
+        android:textSize="30px"
+        android:textColor="@color/color_333333"
+        android:text="一、xxxxx\n二、xxxxxx\n三、xxxxxx"
+        android:layout_marginTop="20px"
+        />
+     </com.zhy.autolayout.AutoLinearLayout>
+</com.lmn.widget.CustomTitleBar>

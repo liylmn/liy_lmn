@@ -52,7 +52,19 @@
             android:name="design_height"
             android:value="1280" />
 
-        <activity android:name=".view.search.SearchActivity"></activity>
+        <activity
+            android:name=".view.search.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.main.detail.DetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.main.detail.DetailMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.my.activity.ModifypswActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.my.activity.LeaveMessageActivity"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

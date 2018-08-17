@@ -1,4 +1,4 @@
-package com.lmn.view.main.homefragment;
+package com.lmn.view.resources;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -10,8 +10,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.lmn.Entity.ResourcesMultiItemEntity0;
+import com.lmn.Entity.ResourcesMultiItemEntity1;
 import com.lmn.R;
-import com.lmn.view.main.adapter.MainhomeAdapter;
+import com.lmn.view.resources.adapter.ResourcesAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -27,71 +30,84 @@ import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseFragment;
 import lmn.com.lmnlibrary.utils.ScreenUtil;
 
-public class MainHomeFragment extends BaseFragment {
+public class ResourcesFragment extends BaseFragment {
 
+    @BindView(R.id.home_title_bar_layout)
+    FrameLayout homeTitleBarLayout;
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.refreshLayout)
     SmartRefreshLayout refreshLayout;
-    @BindView(R.id.home_title_bar_layout)
-    FrameLayout homeTitleBarBgView;
-    MainhomeAdapter mainhomeAdapter;
-    List<String> teststrs;
     private int distanceY;
     /**
      * 改变titlebar中icon颜色时的距离
      */
     private static int DISTANCE_WHEN_TO_SELECTED = 40;
+    ResourcesAdapter resourcesAdapter;
+    private List<MultiItemEntity> list=new ArrayList<>();
+
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_resources;
     }
 
-    public static MainHomeFragment newInstance() {
-        return new MainHomeFragment();
+    public static ResourcesFragment newInstance() {
+        return new ResourcesFragment();
     }
+
     @Override
     public void initview() {
-        teststrs=new ArrayList<String>();
-        for (int i = 0; i <20 ; i++) {
-            teststrs.add("测试数据"+i);
-        }
+
+    }
+
+    @Override
+    public void initData() {
+        ResourcesMultiItemEntity0 ResourcesMultiItemEntity1 = new ResourcesMultiItemEntity0();
+        ResourcesMultiItemEntity0 detailMultiItemEntity2 = new ResourcesMultiItemEntity0();
+        ResourcesMultiItemEntity0 detailMultiItemEntity3 = new ResourcesMultiItemEntity0();
+        ResourcesMultiItemEntity1 ResourcesMultiItemEntity11 = new ResourcesMultiItemEntity1();
+        ResourcesMultiItemEntity1 ResourcesMultiItemEntity12 = new ResourcesMultiItemEntity1();
+        ResourcesMultiItemEntity1 ResourcesMultiItemEntity13 = new ResourcesMultiItemEntity1();
+        ResourcesMultiItemEntity1.title = "测试第一层1";
+        detailMultiItemEntity2.title = "测试第一层2";
+        detailMultiItemEntity3.title = "测试第一层3";
+        ResourcesMultiItemEntity11.title = "测试第二层1";
+        ResourcesMultiItemEntity12.title = "测试第二层2";
+        ResourcesMultiItemEntity13.title = "测试第二层3";
+        ResourcesMultiItemEntity1.addSubItem(ResourcesMultiItemEntity11);
+        ResourcesMultiItemEntity1.addSubItem(ResourcesMultiItemEntity12);
+        ResourcesMultiItemEntity1.addSubItem(ResourcesMultiItemEntity13);
+        list.add(ResourcesMultiItemEntity1);
+        list.add(detailMultiItemEntity2);
+        list.add(detailMultiItemEntity3);
+        resourcesAdapter = new ResourcesAdapter(list);
         //设置 Footer 为 球脉冲 样式
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
-        mainhomeAdapter=new MainhomeAdapter(R.layout.item_home,teststrs);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 distanceY += dy;
-                if (distanceY > ScreenUtil.dip2px(mActivity, 20)) {
-                    homeTitleBarBgView.setBackgroundColor(getResources().getColor(R.color.white));
+                if (distanceY > ScreenUtil.dip2px(mContext, 20)) {
+                    homeTitleBarLayout.setBackgroundColor(getResources().getColor(R.color.white));
                     if (Build.VERSION.SDK_INT > 10) {
-                        homeTitleBarBgView.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mActivity, 100));
-                    }
-                    else {
+                        homeTitleBarLayout.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mContext, 100));
+                    } else {
                         DISTANCE_WHEN_TO_SELECTED = 20;
                     }
-                }
-                else {
-                    homeTitleBarBgView.setBackgroundColor(0);
+                } else {
+                    homeTitleBarLayout.setBackgroundColor(0);
                 }
 
-                if (distanceY > ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarBgView.isSelected()) {
-                    homeTitleBarBgView.setSelected(true);
-                }
-                else if (distanceY <= ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarBgView.isSelected()) {
-                    homeTitleBarBgView.setSelected(false);
+                if (distanceY > ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarLayout.isSelected()) {
+                    homeTitleBarLayout.setSelected(true);
+                } else if (distanceY <= ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarLayout.isSelected()) {
+                    homeTitleBarLayout.setSelected(false);
                 }
             }
         });
-        recyclerView.setAdapter(mainhomeAdapter);
-    }
-
-    @Override
-    public void initData() {
-
+        recyclerView.setAdapter(resourcesAdapter);
     }
 
     @Override
@@ -108,7 +124,7 @@ public class MainHomeFragment extends BaseFragment {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
             }
         });
-        homeTitleBarBgView.setOnClickListener(new View.OnClickListener() {
+        homeTitleBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ARouter.getInstance().build("/search/activity").navigation();
@@ -125,5 +141,8 @@ public class MainHomeFragment extends BaseFragment {
     }
 
 
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
 }

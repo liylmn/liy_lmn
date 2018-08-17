@@ -1,7 +1,6 @@
 package com.lmn.view.main;
 
 
-import com.lmn.MainDataManager;
 
 import dagger.Module;
 import dagger.Provides;

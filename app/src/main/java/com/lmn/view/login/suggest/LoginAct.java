@@ -36,7 +36,6 @@ import lmn.com.lmnlibrary.utils.DialogUtil;
 @Route(path = "/lmn/login")
 public class LoginAct extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
     private DrawableTextView logo;
-    private DrawableTextView icon;
     private EditText et_mobile;
     private EditText et_password;
     private ImageView iv_clean_phone;
@@ -58,15 +57,12 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
         setContentView(R.layout.activity_login);
         initView();
         initListener();
-
         keyboardWatcher = new KeyboardWatcher(findViewById(Window.ID_ANDROID_CONTENT));
         keyboardWatcher.addSoftKeyboardStateListener(this);
-
     }
 
     private void initView() {
         logo = (DrawableTextView) findViewById(R.id.logo);
-        icon = (DrawableTextView) findViewById(R.id.icon);
         et_mobile = (EditText) findViewById(R.id.et_mobile);
         et_password = (EditText) findViewById(R.id.et_password);
         iv_clean_phone = (ImageView) findViewById(R.id.iv_clean_phone);
@@ -248,7 +244,6 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
             mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
             mAnimatorTranslateY.start();
             zoomIn(logo, keyboardSize - bottom);
-            zoomIn(icon, keyboardSize - bottom);
 
         }
     }
@@ -261,7 +256,6 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
         mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
         mAnimatorTranslateY.start();
         zoomOut(logo);
-        zoomOut(icon);
     }
     private Dialog loadingDialog;
 

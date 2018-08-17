@@ -5,13 +5,13 @@ package lmn.com.lmnlibrary.base;
  */
 
 public interface UiCallback {
+    //设置布局资源文件id
+    int getLayoutId();
     void initview();
     //初始化数据
     void initData();
     //设置事件监听
     void setListener();
-    //设置布局资源文件id
-    int getLayoutId();
     //是否使用eventbus
     boolean useEventBus();
 

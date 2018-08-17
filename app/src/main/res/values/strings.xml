@@ -1,9 +1,23 @@
 <resources>
-    <string name="app_name">补丁</string>
+    <string name="app_name">liylmn</string>
     <string name="hint_login_username">请输入手机号码</string>
     <string name="hint_login_password">输入密码</string>
     <string name="login">登录</string>
     <string name="login_forget_pwd">忘记密码</string>
     <string name="please_input_limit_pwd">请输入数字或字母</string>
+
+    <!--我的-->
+    <string name="my_number">工号</string>
+    <string name="my_name">姓名</string>
+    <string name="my_modify_psw">修改密码</string>
+    <string name="my_leave_message">留言板</string>
+    <string name="my_btn_back">退出账号</string>
+
+    <string name="btn_submission">提交</string>
+    <string name="btn_sure">确认</string>
+    <!--修改密码-->
+    <string name="old_psw">请输入旧密码</string>
+    <string name="new_psw">请输入新密码</string>
+
 
 </resources>

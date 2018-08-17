@@ -1,7 +1,9 @@
 package com.lmn.view.main.adapter;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.lmn.R;
@@ -30,8 +32,16 @@ public class MainhomeAdapter extends BaseQuickAdapter<String,BaseViewHolder>{
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
+    protected void convert(BaseViewHolder helper, final String item) {
      helper.setText(R.id.tv_type,item.toString());
+     helper.getView(R.id.al_message).setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             ARouter.getInstance().build("/detail/activity")
+                     .withString("message", item.toString())
+                     .navigation();
+         }
+     });
     }
 
 }

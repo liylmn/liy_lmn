@@ -3,7 +3,6 @@ package com.lmn.view.main;
 import android.util.Log;
 
 import com.lmn.BasePresenter;
-import com.lmn.MainDataManager;
 
 import java.io.IOException;
 import java.util.HashMap;

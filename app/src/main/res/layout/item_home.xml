@@ -15,11 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:id="@+id/al_message">
         <com.zhy.autolayout.AutoLinearLayout
             android:id="@+id/bt_print_qr_code"
-            android:layout_width="550px"
-            android:layout_height="260px"
+            android:layout_width="650px"
+            android:layout_height="160px"
             android:orientation="vertical"
             android:gravity="center"
             android:background="@drawable/bg_btn_change_selected"
@@ -28,7 +29,7 @@
                 android:id="@+id/tv_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="60px"
+                android:textSize="30px"
                 android:text=""
                 android:textColor="@color/white"
                 />

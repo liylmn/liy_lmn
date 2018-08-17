@@ -5,9 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.lmn.MainDataManager;
 import com.lmn.R;
 import com.lmn.view.main.homefragment.MainHomeFragment;
+import com.lmn.view.my.fragment.MyFragment;
+import com.lmn.view.resources.ResourcesFragment;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     FrameLayout mainContainer;
 
     private MainHomeFragment mMainHomeFragment;
+    private ResourcesFragment resourcesFragment;
+    private MyFragment myFragment;
     private FragmentManager mFragmentManager;
     @Override
     public void initview() {
@@ -39,7 +42,17 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
             mMainHomeFragment = MainHomeFragment.newInstance();
             addFragment(R.id.main_container, mMainHomeFragment, "home_fg");
         }
-        mFragmentManager.beginTransaction().show(mMainHomeFragment)
+        resourcesFragment = (ResourcesFragment) mFragmentManager.findFragmentByTag("resources_fg");
+        if (resourcesFragment == null) {
+            resourcesFragment = ResourcesFragment.newInstance();
+            addFragment(R.id.main_container, resourcesFragment, "resources_fg");
+        }
+        myFragment = (MyFragment) mFragmentManager.findFragmentByTag("my_fg");
+        if (myFragment == null) {
+            myFragment = MyFragment.newInstance();
+            addFragment(R.id.main_container, myFragment, "my_fg");
+        }
+        mFragmentManager.beginTransaction().show(mMainHomeFragment).hide(resourcesFragment).hide(myFragment)
                 .commitAllowingStateLoss();
         DaggerMainActivityComponent.builder()
                 .appComponent(getAppComponent())
@@ -88,7 +101,16 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
     @Override
     public void onTabSelected(int position) {
-
+        if (position == 0) {
+            mFragmentManager.beginTransaction().hide(resourcesFragment).hide(myFragment).show(mMainHomeFragment)
+                    .commitAllowingStateLoss();
+        } else if (position == 1) {
+            mFragmentManager.beginTransaction().hide(mMainHomeFragment).hide(myFragment).show(resourcesFragment)
+                    .commitAllowingStateLoss();
+        } else if (position == 2) {
+            mFragmentManager.beginTransaction().hide(resourcesFragment).hide(mMainHomeFragment).show(myFragment)
+                    .commitAllowingStateLoss();
+        }
     }
 
     @Override
@@ -105,7 +127,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
+        unbinder=ButterKnife.bind(this);
 
     }
 

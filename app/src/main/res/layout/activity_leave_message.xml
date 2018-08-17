@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lmn.widget.CustomTitleBar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    app:left_btn_visible="true"
+    app:title_text="留言板"
+    app:title_visible="true">
+
+        <com.zhy.autolayout.AutoRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:gravity="center">
+            <EditText
+                android:id="@+id/edit_waste_objection"
+                android:layout_width="670px"
+                android:layout_height="700px"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:layout_marginTop="30px"
+                android:background="@drawable/edit_bg"
+                android:gravity="center"
+                android:hint="请输入您宝贵的意见"
+                android:lines="8"
+                android:textSize="30px"></EditText>
+            <Button
+                android:id="@+id/my_btn_back"
+                android:layout_width="match_parent"
+                android:layout_height="88px"
+                android:background="@drawable/bg_btn_login_selected"
+                android:text="@string/btn_submission"
+                android:textColor="@color/color_ffffff"
+                android:textSize="@dimen/dimen_30px"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/dimen_90px"
+                android:layout_marginLeft="@dimen/dimen_40px"
+                android:layout_marginRight="@dimen/dimen_40px"/>
+        </com.zhy.autolayout.AutoRelativeLayout>
+
+</com.lmn.widget.CustomTitleBar>
