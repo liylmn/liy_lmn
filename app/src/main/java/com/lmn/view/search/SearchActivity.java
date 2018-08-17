@@ -51,7 +51,7 @@ public class SearchActivity extends AppCompatActivity {
                 finish();
             }
         });
-        initPop();
+//        initPop();
 
     }
 

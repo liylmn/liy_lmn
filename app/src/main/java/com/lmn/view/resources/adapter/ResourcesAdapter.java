@@ -1,8 +1,12 @@
 package com.lmn.view.resources.adapter;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Toast;
 
-import com.alibaba.android.arouter.launcher.ARouter;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
@@ -28,11 +32,12 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
      */
     public static final int TYPE_LEVEL_0 = 0;
     public static final int TYPE_LEVEL_1 = 1;
-    public static final int TYPE_LEVEL_2 = 2;
-    public ResourcesAdapter(List<MultiItemEntity> data) {
+    private Context context;
+    public ResourcesAdapter(Context context,List<MultiItemEntity> data) {
         super(data);
             addItemType(TYPE_LEVEL_0, R.layout.item_expandable_lv0);
             addItemType(TYPE_LEVEL_1, R.layout.item_expandable_lv1);
+            this.context=context;
     }
 
     @Override
@@ -62,10 +67,18 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ARouter.getInstance().build("/detailmessage/activity")
-                                .withString("message", ((ResourcesMultiItemEntity1) item).getTitle())
-                                .navigation();
-
+                        MaterialDialog materialDialog=new MaterialDialog.Builder(context)
+                                .title("下载附件")
+                                .content(((ResourcesMultiItemEntity1) item).getTitle()+".PDF")
+                                .positiveText("下载")
+                                .negativeText("取消")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        Toast.makeText(context,"开始下载",Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .show();
                     }
                 });
                 break;

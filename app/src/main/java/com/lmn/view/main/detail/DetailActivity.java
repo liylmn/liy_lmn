@@ -74,6 +74,12 @@ public class DetailActivity extends BaseActivity {
         detailMultiItemEntity1.addSubItem(detailMultiItemEntity11);
         detailMultiItemEntity1.addSubItem(detailMultiItemEntity12);
         detailMultiItemEntity1.addSubItem(detailMultiItemEntity13);
+        detailMultiItemEntity2.addSubItem(detailMultiItemEntity11);
+        detailMultiItemEntity2.addSubItem(detailMultiItemEntity12);
+        detailMultiItemEntity2.addSubItem(detailMultiItemEntity13);
+        detailMultiItemEntity3.addSubItem(detailMultiItemEntity11);
+        detailMultiItemEntity3.addSubItem(detailMultiItemEntity12);
+        detailMultiItemEntity3.addSubItem(detailMultiItemEntity13);
         list.add(detailMultiItemEntity1);
         list.add(detailMultiItemEntity2);
         list.add(detailMultiItemEntity3);
@@ -133,5 +139,6 @@ public class DetailActivity extends BaseActivity {
 
     @OnClick(R.id.home_title_bar_layout)
     public void onViewClicked() {
+        ARouter.getInstance().build("/search/activity").navigation();
     }
 }

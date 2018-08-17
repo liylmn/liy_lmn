@@ -1,6 +1,5 @@
 package com.lmn.view.main.homefragment;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +24,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseFragment;
-import lmn.com.lmnlibrary.utils.ScreenUtil;
 
 public class MainHomeFragment extends BaseFragment {
 
@@ -60,32 +58,32 @@ public class MainHomeFragment extends BaseFragment {
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
         mainhomeAdapter=new MainhomeAdapter(R.layout.item_home,teststrs);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                distanceY += dy;
-                if (distanceY > ScreenUtil.dip2px(mActivity, 20)) {
-                    homeTitleBarBgView.setBackgroundColor(getResources().getColor(R.color.white));
-                    if (Build.VERSION.SDK_INT > 10) {
-                        homeTitleBarBgView.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mActivity, 100));
-                    }
-                    else {
-                        DISTANCE_WHEN_TO_SELECTED = 20;
-                    }
-                }
-                else {
-                    homeTitleBarBgView.setBackgroundColor(0);
-                }
-
-                if (distanceY > ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarBgView.isSelected()) {
-                    homeTitleBarBgView.setSelected(true);
-                }
-                else if (distanceY <= ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarBgView.isSelected()) {
-                    homeTitleBarBgView.setSelected(false);
-                }
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                distanceY += dy;
+//                if (distanceY > ScreenUtil.dip2px(mActivity, 20)) {
+//                    homeTitleBarBgView.setBackgroundColor(getResources().getColor(R.color.white));
+//                    if (Build.VERSION.SDK_INT > 10) {
+//                        homeTitleBarBgView.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mActivity, 100));
+//                    }
+//                    else {
+//                        DISTANCE_WHEN_TO_SELECTED = 20;
+//                    }
+//                }
+//                else {
+//                    homeTitleBarBgView.setBackgroundColor(0);
+//                }
+//
+//                if (distanceY > ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarBgView.isSelected()) {
+//                    homeTitleBarBgView.setSelected(true);
+//                }
+//                else if (distanceY <= ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarBgView.isSelected()) {
+//                    homeTitleBarBgView.setSelected(false);
+//                }
+//            }
+//        });
         recyclerView.setAdapter(mainhomeAdapter);
     }
 

@@ -1,6 +1,5 @@
 package com.lmn.view.resources;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +27,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseFragment;
-import lmn.com.lmnlibrary.utils.ScreenUtil;
 
 public class ResourcesFragment extends BaseFragment {
 
@@ -62,51 +60,44 @@ public class ResourcesFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        ResourcesMultiItemEntity0 ResourcesMultiItemEntity1 = new ResourcesMultiItemEntity0();
-        ResourcesMultiItemEntity0 detailMultiItemEntity2 = new ResourcesMultiItemEntity0();
-        ResourcesMultiItemEntity0 detailMultiItemEntity3 = new ResourcesMultiItemEntity0();
-        ResourcesMultiItemEntity1 ResourcesMultiItemEntity11 = new ResourcesMultiItemEntity1();
-        ResourcesMultiItemEntity1 ResourcesMultiItemEntity12 = new ResourcesMultiItemEntity1();
-        ResourcesMultiItemEntity1 ResourcesMultiItemEntity13 = new ResourcesMultiItemEntity1();
-        ResourcesMultiItemEntity1.title = "测试第一层1";
-        detailMultiItemEntity2.title = "测试第一层2";
-        detailMultiItemEntity3.title = "测试第一层3";
-        ResourcesMultiItemEntity11.title = "测试第二层1";
-        ResourcesMultiItemEntity12.title = "测试第二层2";
-        ResourcesMultiItemEntity13.title = "测试第二层3";
-        ResourcesMultiItemEntity1.addSubItem(ResourcesMultiItemEntity11);
-        ResourcesMultiItemEntity1.addSubItem(ResourcesMultiItemEntity12);
-        ResourcesMultiItemEntity1.addSubItem(ResourcesMultiItemEntity13);
-        list.add(ResourcesMultiItemEntity1);
-        list.add(detailMultiItemEntity2);
-        list.add(detailMultiItemEntity3);
-        resourcesAdapter = new ResourcesAdapter(list);
+        for (int i = 0; i <3 ; i++) {
+            ResourcesMultiItemEntity0 resourcesMultiItemEntity0 = new ResourcesMultiItemEntity0();
+            resourcesMultiItemEntity0.title = "测试第一层"+(i+1);
+            for (int j = 0; j <5 ; j++) {
+                ResourcesMultiItemEntity1 resourcesMultiItemEntity1 = new ResourcesMultiItemEntity1();
+                resourcesMultiItemEntity1.title="测试第二层"+(j+1);
+                resourcesMultiItemEntity0.addSubItem(resourcesMultiItemEntity1);
+            }
+            list.add(resourcesMultiItemEntity0);
+        }
+
+        resourcesAdapter = new ResourcesAdapter(mActivity,list);
         //设置 Footer 为 球脉冲 样式
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                distanceY += dy;
-                if (distanceY > ScreenUtil.dip2px(mContext, 20)) {
-                    homeTitleBarLayout.setBackgroundColor(getResources().getColor(R.color.white));
-                    if (Build.VERSION.SDK_INT > 10) {
-                        homeTitleBarLayout.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mContext, 100));
-                    } else {
-                        DISTANCE_WHEN_TO_SELECTED = 20;
-                    }
-                } else {
-                    homeTitleBarLayout.setBackgroundColor(0);
-                }
-
-                if (distanceY > ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarLayout.isSelected()) {
-                    homeTitleBarLayout.setSelected(true);
-                } else if (distanceY <= ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarLayout.isSelected()) {
-                    homeTitleBarLayout.setSelected(false);
-                }
-            }
-        });
+//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                distanceY += dy;
+//                if (distanceY > ScreenUtil.dip2px(mContext, 20)) {
+//                    homeTitleBarLayout.setBackgroundColor(getResources().getColor(R.color.white));
+//                    if (Build.VERSION.SDK_INT > 10) {
+//                        homeTitleBarLayout.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mContext, 100));
+//                    } else {
+//                        DISTANCE_WHEN_TO_SELECTED = 20;
+//                    }
+//                } else {
+//                    homeTitleBarLayout.setBackgroundColor(0);
+//                }
+//
+//                if (distanceY > ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarLayout.isSelected()) {
+//                    homeTitleBarLayout.setSelected(true);
+//                } else if (distanceY <= ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarLayout.isSelected()) {
+//                    homeTitleBarLayout.setSelected(false);
+//                }
+//            }
+//        });
         recyclerView.setAdapter(resourcesAdapter);
     }
 

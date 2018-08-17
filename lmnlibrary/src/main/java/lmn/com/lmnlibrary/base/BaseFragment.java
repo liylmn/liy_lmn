@@ -43,8 +43,6 @@ public class BaseFragment extends LazyFragment implements UiCallback {
         rootView = inflater.inflate(getLayoutId(), container, false);
         unbinder = KnifeUtil.bind(this, rootView);
         initview();
-        initData();
-        setListener();
         return rootView;
     }
 

@@ -2,7 +2,7 @@ package com.lmn.Entity;
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.lmn.view.main.detail.adapter.DetailAdapter;
+import com.lmn.view.resources.adapter.ResourcesAdapter;
 
 /**
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
@@ -12,7 +12,7 @@ public class ResourcesMultiItemEntity1 extends AbstractExpandableItem implements
 
     @Override
     public int getItemType() {
-        return DetailAdapter.TYPE_LEVEL_1;
+        return ResourcesAdapter.TYPE_LEVEL_1;
     }
 
     @Override
