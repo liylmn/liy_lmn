@@ -9,9 +9,9 @@ import lmn.com.lmnlibrary.imageloader.ILoader;
 public class CommonConfig {
     public static int HTTP_READ_TIME_OUT = 15;
     public static int HTTP_CONNECT_TIME_OUT = 15;
-    public static String BASE_URL = "http://api.douban.com/v2/movie/top250/";
+    public static String BASE_URL = "http://118.24.8.237:8080/";
     public static boolean DEBUG = true;
-    public static String SHARE_PREFERENCE_FILE_NAME = "diantudaikuan";
+    public static String SHARE_PREFERENCE_FILE_NAME = "liylmn";
     public static boolean LOGIN = true;
     // #imageloader
     public static final int IL_LOADING_RES = ILoader.Options.RES_NONE;

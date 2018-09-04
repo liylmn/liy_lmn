@@ -6,6 +6,7 @@ import android.view.View;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.lmn.Entity.HomeFragmentEntity;
 import com.lmn.R;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  * 说明：日常工作或学习
  */
 
-public class MainhomeAdapter extends BaseQuickAdapter<String,BaseViewHolder>{
+public class MainhomeAdapter extends BaseQuickAdapter<HomeFragmentEntity.DataBean.ListBean,BaseViewHolder>{
     public MainhomeAdapter(int layoutResId, @Nullable List data) {
         super(layoutResId, data);
     }
@@ -32,13 +33,13 @@ public class MainhomeAdapter extends BaseQuickAdapter<String,BaseViewHolder>{
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, final String item) {
-     helper.setText(R.id.tv_type,item.toString());
+    protected void convert(BaseViewHolder helper, final HomeFragmentEntity.DataBean.ListBean item) {
+     helper.setText(R.id.tv_type,item.getName());
      helper.getView(R.id.al_message).setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
              ARouter.getInstance().build("/detail/activity")
-                     .withString("message", item.toString())
+                     .withString("message", item.getName())
                      .navigation();
          }
      });

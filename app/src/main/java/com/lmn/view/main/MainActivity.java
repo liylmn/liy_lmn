@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.lmn.MainDataManager;
 import com.lmn.R;
 import com.lmn.view.main.homefragment.MainHomeFragment;
 import com.lmn.view.my.fragment.MyFragment;

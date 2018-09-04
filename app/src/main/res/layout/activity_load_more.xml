@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lmn.widget.CustomTitleBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    app:left_btn_visible="false"
+    app:title_text="更多详情"
+    app:title_visible="true">
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:background="#fff" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</com.lmn.widget.CustomTitleBar>
+

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.lmn.Entity.HomeFragmentEntity;
+import com.lmn.MainDataManager;
 import com.lmn.R;
 import com.lmn.view.main.adapter.MainhomeAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -18,14 +20,15 @@ import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseFragment;
 
-public class MainHomeFragment extends BaseFragment {
+public class MainHomeFragment extends BaseFragment implements HomeContract.View{
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -40,6 +43,8 @@ public class MainHomeFragment extends BaseFragment {
      * 改变titlebar中icon颜色时的距离
      */
     private static int DISTANCE_WHEN_TO_SELECTED = 40;
+    @Inject
+    HomePresenter mPresenter;
     @Override
     public int getLayoutId() {
         return R.layout.fragment_home;
@@ -50,46 +55,20 @@ public class MainHomeFragment extends BaseFragment {
     }
     @Override
     public void initview() {
-        teststrs=new ArrayList<String>();
-        for (int i = 0; i <20 ; i++) {
-            teststrs.add("测试数据"+i);
-        }
-        //设置 Footer 为 球脉冲 样式
+        DaggerHomeFragmentComponent.builder()
+                .appComponent(getAppComponent())
+                .homePresenterModule(new HomePresenterModule(this, MainDataManager.getInstance(mDataManager)))
+                .build()
+                .inject(this);
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
-        mainhomeAdapter=new MainhomeAdapter(R.layout.item_home,teststrs);
+        mainhomeAdapter=new MainhomeAdapter(R.layout.item_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                distanceY += dy;
-//                if (distanceY > ScreenUtil.dip2px(mActivity, 20)) {
-//                    homeTitleBarBgView.setBackgroundColor(getResources().getColor(R.color.white));
-//                    if (Build.VERSION.SDK_INT > 10) {
-//                        homeTitleBarBgView.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mActivity, 100));
-//                    }
-//                    else {
-//                        DISTANCE_WHEN_TO_SELECTED = 20;
-//                    }
-//                }
-//                else {
-//                    homeTitleBarBgView.setBackgroundColor(0);
-//                }
-//
-//                if (distanceY > ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarBgView.isSelected()) {
-//                    homeTitleBarBgView.setSelected(true);
-//                }
-//                else if (distanceY <= ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarBgView.isSelected()) {
-//                    homeTitleBarBgView.setSelected(false);
-//                }
-//            }
-//        });
         recyclerView.setAdapter(mainhomeAdapter);
     }
 
     @Override
     public void initData() {
-
+        mPresenter.getHomeData();
     }
 
     @Override
@@ -122,6 +101,8 @@ public class MainHomeFragment extends BaseFragment {
         return rootView;
     }
 
-
-
+    @Override
+    public void setHomeData(HomeFragmentEntity find) {
+     mainhomeAdapter.setNewData(find.getData().getList());
+    }
 }
