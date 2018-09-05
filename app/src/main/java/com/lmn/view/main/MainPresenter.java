@@ -3,7 +3,6 @@ package com.lmn.view.main;
 import com.lmn.BasePresenter;
 import com.lmn.MainDataManager;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -27,30 +26,6 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
     @Override
     public void getText() {
-//        mMainView.showProgressDialogView();
-//        Disposable disposable = mDataManager.getMainData(0, 10, new ErrorDisposableObserver<ResponseBody>() {
-//            @Override
-//            public void onNext(ResponseBody responseBody) {
-//                try {
-//                    mMainView.setText(responseBody.string());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            //如果需要发生Error时操作UI可以重写onError，统一错误操作可以在ErrorDisposableObserver中统一执行
-//            @Override
-//            public void onError(Throwable e) {
-//                super.onError(e);
-//                mMainView.hiddenProgressDialogView();
-//            }
-//
-//            @Override
-//            public void onComplete() {
-//                Log.e(TAG, "onComplete: " );
-//                mMainView.hiddenProgressDialogView();
-//            }
-//        });
-//        addDisposabe(disposable);
 
     }
 
@@ -63,10 +38,6 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
     @Override
     public void saveData() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("username","xiaoming");
-        map.put("password","123456");
-        mDataManager.saveSPMapData(map);
     }
 
     @Override

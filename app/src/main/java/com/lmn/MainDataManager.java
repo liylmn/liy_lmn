@@ -1,12 +1,16 @@
 package com.lmn;
 
-import com.lmn.view.main.homefragment.HomeFragmentService;
+import com.lmn.Entity.DetailEntity;
+import com.lmn.Entity.HomeFragmentEntity;
+import com.lmn.Entity.LoginEntity;
+import com.lmn.http.ApiService;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 import lmn.com.lmnlibrary.manager.BaseDataManager;
 import lmn.com.lmnlibrary.manager.DataManager;
-import okhttp3.ResponseBody;
 
 
 /**
@@ -24,25 +28,28 @@ public class MainDataManager extends BaseDataManager {
     }
 
     /*
-     *验证短信验证码注册/登陆 （只做示例，无数据返回）
-     */
-    public Disposable login(DisposableObserver<ResponseBody> consumer, String mobile, String verifyCode) {
-
-        return changeIOToMainThread(getService(MainApiService.class).login(mobile,verifyCode), consumer);
-    }
-    /*
      *获取首页信息
      */
-    public Disposable getall(DisposableObserver<ResponseBody> consumer) {
-        return changeIOToMainThread(getService(HomeFragmentService.class).getall(), consumer);
-
+    public Disposable getall(DisposableObserver<HomeFragmentEntity> consumer) {
+       return getService(ApiService.class).getall().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(consumer);
     }
-//    public Disposable getMainData(int start , int count , DisposableObserver<ResponseBody> consumer){
-//        Map<String,Object> map = new HashMap<>(2);
-//        map.put("start",start);
-//        map.put("count",count);
-//        return changeIOToMainThread(getService(BaseApiService.class).executeGet("http://www.baidu.com",map),consumer);
-//    }
-
+    /*
+     *登录
+     */
+    public Disposable login(String name ,String psw,DisposableObserver<LoginEntity> consumer) {
+       return getService(ApiService.class).login(name,psw).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(consumer);
+    }
+    /*
+     *故障信息分页接口
+     */
+    public Disposable getinfo(String typeId ,String pageNum,String pageSize,DisposableObserver<DetailEntity> consumer) {
+       return getService(ApiService.class).getinfo(typeId,pageNum,pageSize).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(consumer);
+    }
 
 }

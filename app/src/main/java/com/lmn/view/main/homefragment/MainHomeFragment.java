@@ -105,4 +105,14 @@ public class MainHomeFragment extends BaseFragment implements HomeContract.View{
     public void setHomeData(HomeFragmentEntity find) {
      mainhomeAdapter.setNewData(find.getData().getList());
     }
+
+    @Override
+    public void showProgressDialogView() {
+        showProgressDialog("数据请求中");
+    }
+
+    @Override
+    public void hiddenProgressDialogView() {
+        hiddenProgressDialog();
+    }
 }

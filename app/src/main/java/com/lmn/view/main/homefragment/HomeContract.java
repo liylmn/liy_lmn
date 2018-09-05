@@ -9,6 +9,9 @@ import com.lmn.Entity.HomeFragmentEntity;
 public interface HomeContract {
     interface View {
         void setHomeData(HomeFragmentEntity find);
+        void showProgressDialogView();
+
+        void hiddenProgressDialogView();
     }
 
     interface Presenter {

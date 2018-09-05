@@ -25,8 +25,12 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
+import com.lmn.MainDataManager;
 import com.lmn.R;
 
+import javax.inject.Inject;
+
+import lmn.com.lmnlibrary.GlobalAppComponent;
 import lmn.com.lmnlibrary.utils.DialogUtil;
 
 
@@ -34,7 +38,7 @@ import lmn.com.lmnlibrary.utils.DialogUtil;
  * Created by WZH on 2017/3/25.
  */
 @Route(path = "/lmn/login")
-public class LoginAct extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener {
+public class LoginAct extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener ,LoginContract.View{
     private DrawableTextView logo;
     private EditText et_mobile;
     private EditText et_password;
@@ -50,7 +54,8 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
     private KeyboardWatcher keyboardWatcher;
 
     private View root;
-
+    @Inject
+    LoginPresenter mPresenter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,11 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
     }
 
     private void initView() {
+        DaggerLoginComponent.builder()
+                .appComponent( GlobalAppComponent.getAppComponent())
+                .loginPresenterModule(new LoginPresenterModule(this, MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager())))
+                .build()
+                .inject(this);
         logo = (DrawableTextView) findViewById(R.id.logo);
         et_mobile = (EditText) findViewById(R.id.et_mobile);
         et_password = (EditText) findViewById(R.id.et_password);
@@ -201,7 +211,16 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
                 finish();
                 break;
             case R.id.btn_login:
-                ARouter.getInstance().build("/main/activity").navigation();
+                if (et_password.getText().toString().equals("")){
+                    Toast.makeText(LoginAct.this,"请输入手机号",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (et_password.getText().toString().equals("")){
+                    Toast.makeText(LoginAct.this,"请输入密码",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                showProgressDialog("登录中",null);
+                mPresenter.login();
                 break;
             case R.id.iv_show_pwd:
                 if (flag == true) {
@@ -244,7 +263,6 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
             mAnimatorTranslateY.setInterpolator(new AccelerateDecelerateInterpolator());
             mAnimatorTranslateY.start();
             zoomIn(logo, keyboardSize - bottom);
-
         }
     }
 
@@ -275,4 +293,24 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
     }
 
 
+    @Override
+    public void loginsuccess() {
+        hiddenProgressDialog();
+        ARouter.getInstance().build("/main/activity").navigation();
+    }
+
+    @Override
+    public void loginfail() {
+        hiddenProgressDialog();
+    }
+
+    @Override
+    public String getname() {
+        return et_mobile.getText().toString();
+    }
+
+    @Override
+    public String getpsw() {
+        return et_password.getText().toString();
+    }
 }

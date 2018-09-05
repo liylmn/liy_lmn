@@ -40,6 +40,7 @@ public class MainhomeAdapter extends BaseQuickAdapter<HomeFragmentEntity.DataBea
          public void onClick(View v) {
              ARouter.getInstance().build("/detail/activity")
                      .withString("message", item.getName())
+                     .withString("status", item.getStatus()+"")
                      .navigation();
          }
      });

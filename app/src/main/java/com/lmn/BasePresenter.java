@@ -27,6 +27,5 @@ public class BasePresenter {
             disposables = new CompositeDisposable();
         }
         disposables.add(disposable);
-
     }
 }

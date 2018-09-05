@@ -3,6 +3,7 @@ package lmn.com.lmnlibrary.base;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class BaseFragment extends LazyFragment implements UiCallback {
      */
     private Dialog dialog;
     protected View rootView;
+    private Dialog loadingDialog;
 
     @Nullable
     @Override
@@ -85,19 +87,31 @@ public class BaseFragment extends LazyFragment implements UiCallback {
         return GlobalAppComponent.getAppComponent();
     }
 
-    protected void showJDLoadingDialog() {
-        if (dialog == null) dialog = DialogUtil.createJDLoadingDialog(mActivity, null);
-        if (!dialog.isShowing()) {
-            dialog.show();
-        }
+    protected void showProgressDialog(){
+        this.showProgressDialog(null,null);
     }
 
-    protected void hideJDLoadingDialog() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
+    protected void showProgressDialog(String msg){
+        this.showProgressDialog(msg , null);
     }
 
+    protected void showProgressDialog(DialogInterface.OnCancelListener listener){
+        this.showProgressDialog(null ,listener);
+    }
+
+    protected void showProgressDialog(String msg , DialogInterface.OnCancelListener listener){
+        if(loadingDialog == null){
+            loadingDialog = DialogUtil.createLoadingDialog(mActivity, msg, listener);
+        }else if(!loadingDialog.isShowing()){
+            loadingDialog.show();
+        }
+
+    }
+    protected void hiddenProgressDialog(){
+        if(loadingDialog != null && loadingDialog.isShowing()){
+            loadingDialog.dismiss();
+        }
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

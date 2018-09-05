@@ -38,6 +38,8 @@ public class MyFragment extends BaseFragment {
 
     @Override
     public void initview() {
+        tvMyName.setText(mDataManager.getSPMapData().get("username"));
+        tvMyNumber.setText(mDataManager.getSPMapData().get("number"));
     }
 
     @Override
