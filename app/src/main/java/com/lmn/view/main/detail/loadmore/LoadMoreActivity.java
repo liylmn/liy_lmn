@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
+import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
+import com.lmn.Entity.DetailMessageEntity;
 import com.lmn.R;
 import com.lmn.view.main.detail.adapter.LoadmoreAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -18,7 +22,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseActivity;
-
+@Route(path = "/loadmore/activity")
 public class LoadMoreActivity extends BaseActivity {
 
 
@@ -28,6 +32,8 @@ public class LoadMoreActivity extends BaseActivity {
     SmartRefreshLayout refreshLayout;
     private ArrayList<String> teststrs;
     LoadmoreAdapter loadmoreAdapter;
+    @Autowired
+    DetailMessageEntity  detailMessageEntity;
     @Override
     public int getLayoutId() {
         return R.layout.activity_load_more;
@@ -35,40 +41,15 @@ public class LoadMoreActivity extends BaseActivity {
 
     @Override
     public void initview() {
+        ARouter.getInstance().inject(this);
         teststrs=new ArrayList<String>();
-        for (int i = 0; i <20 ; i++) {
-            teststrs.add("测试数据"+i);
+        for (int i = 0; i <detailMessageEntity.getData().getFault().getFaultImgs().size() ; i++) {
+            teststrs.add(detailMessageEntity.getData().getBasePath()+detailMessageEntity.getData().getFault().getFaultImgs().get(i).getImg());
         }
         //设置 Footer 为 球脉冲 样式
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
-        loadmoreAdapter=new LoadmoreAdapter(R.layout.item_home,teststrs);
+        loadmoreAdapter=new LoadmoreAdapter(R.layout.item_img,teststrs);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                distanceY += dy;
-//                if (distanceY > ScreenUtil.dip2px(mActivity, 20)) {
-//                    homeTitleBarBgView.setBackgroundColor(getResources().getColor(R.color.white));
-//                    if (Build.VERSION.SDK_INT > 10) {
-//                        homeTitleBarBgView.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mActivity, 100));
-//                    }
-//                    else {
-//                        DISTANCE_WHEN_TO_SELECTED = 20;
-//                    }
-//                }
-//                else {
-//                    homeTitleBarBgView.setBackgroundColor(0);
-//                }
-//
-//                if (distanceY > ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarBgView.isSelected()) {
-//                    homeTitleBarBgView.setSelected(true);
-//                }
-//                else if (distanceY <= ScreenUtil.dip2px(mActivity, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarBgView.isSelected()) {
-//                    homeTitleBarBgView.setSelected(false);
-//                }
-//            }
-//        });
         recyclerView.setAdapter(loadmoreAdapter);
     }
 
@@ -99,4 +80,5 @@ public class LoadMoreActivity extends BaseActivity {
         // TODO: add setContentView(...) invocation
         unbinder=ButterKnife.bind(this);
     }
+
 }

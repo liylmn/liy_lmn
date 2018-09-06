@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.shashank.sony.fancytoastlib.FancyToast;
-
 import butterknife.Unbinder;
 import lmn.com.lmnlibrary.AppComponent;
 import lmn.com.lmnlibrary.GlobalAppComponent;
@@ -71,17 +69,6 @@ public class BaseFragment extends LazyFragment implements UiCallback {
         Toast.makeText(mActivity.getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    protected void showSuccessToast(String message) {
-        FancyToast.makeText(mActivity.getApplicationContext(), message, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true);
-    }
-
-    protected void showDefaultToast(String message) {
-        FancyToast.makeText(mActivity.getApplicationContext(), message, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true);
-    }
-
-    protected void showErrorToast(String message) {
-        FancyToast.makeText(mActivity.getApplicationContext(), message, FancyToast.LENGTH_LONG, FancyToast.DEFAULT, true);
-    }
 
     protected AppComponent getAppComponent() {
         return GlobalAppComponent.getAppComponent();

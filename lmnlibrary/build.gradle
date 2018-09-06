@@ -52,8 +52,8 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     // router
-    compile "com.alibaba:arouter-api:$rootProject.arouterVersion"
-    annotationProcessor "com.alibaba:arouter-compiler:$rootProject.arouterCompilerVersion"
+//    compile "com.alibaba:arouter-api:$rootProject.arouterVersion"
+//    annotationProcessor "com.alibaba:arouter-compiler:$rootProject.arouterCompilerVersion"
     // RunTimePermissionRequest
     compile "pub.devrel:easypermissions:$rootProject.easypermissionVersion"
     //dagger
@@ -65,7 +65,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
 
 
-    compile "com.github.Shashank02051997:FancyToast-Android:$rootProject.fancytoastVersion"
 
     compile "com.zhy:autolayout:$rootProject.autolayout"
     compile "org.greenrobot:eventbus:$rootProject.eventbus"

@@ -33,7 +33,7 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
 
     @Override
     public void login() {
-        String name=mHomeView.getname();
+        final String name=mHomeView.getname();
         String psw= Md5Utils.MD5_LOWERCASE(mHomeView.getpsw());
         addDisposabe(mDataManager.login(name, psw, new DisposableObserver<LoginEntity>() {
         @Override
@@ -42,6 +42,8 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
              HashMap<String, String> map = new HashMap<>();
              map.put("username",loginEntity.getData().getUser().getName());
              map.put("number",loginEntity.getData().getUser().getStudentNumber());
+             map.put("userId",loginEntity.getData().getUser().getId()+"");
+             map.put("phone",name);
              mDataManager.saveSPMapData(map);
              mHomeView.loginsuccess();
          }else {

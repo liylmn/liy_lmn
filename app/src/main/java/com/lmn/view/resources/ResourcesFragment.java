@@ -10,8 +10,10 @@ import android.widget.FrameLayout;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.lmn.Entity.ResouceEntity;
 import com.lmn.Entity.ResourcesMultiItemEntity0;
 import com.lmn.Entity.ResourcesMultiItemEntity1;
+import com.lmn.MainDataManager;
 import com.lmn.R;
 import com.lmn.view.resources.adapter.ResourcesAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -24,11 +26,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseFragment;
 
-public class ResourcesFragment extends BaseFragment {
+public class ResourcesFragment extends BaseFragment implements ResourcesFragmentContract.View {
 
     @BindView(R.id.home_title_bar_layout)
     FrameLayout homeTitleBarLayout;
@@ -42,7 +46,10 @@ public class ResourcesFragment extends BaseFragment {
      */
     private static int DISTANCE_WHEN_TO_SELECTED = 40;
     ResourcesAdapter resourcesAdapter;
-    private List<MultiItemEntity> list=new ArrayList<>();
+    private List<MultiItemEntity> list = new ArrayList<>();
+    private int page = 1;
+    @Inject
+    ResourcesFragmentPresenter resourcesFragmentPresenter;
 
     @Override
     public int getLayoutId() {
@@ -55,50 +62,22 @@ public class ResourcesFragment extends BaseFragment {
 
     @Override
     public void initview() {
-
+    DaggerResourcesFragmentComponent
+            .builder()
+            .appComponent(getAppComponent())
+            .resourcesFragmentPresenterModule(new ResourcesFragmentPresenterModule(MainDataManager.getInstance(mDataManager),this))
+            .build()
+            .inject(this);
+        resourcesAdapter = new ResourcesAdapter(mActivity, list);
+        //设置 Footer 为 球脉冲 样式
+        refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setAdapter(resourcesAdapter);
     }
 
     @Override
     public void initData() {
-        for (int i = 0; i <3 ; i++) {
-            ResourcesMultiItemEntity0 resourcesMultiItemEntity0 = new ResourcesMultiItemEntity0();
-            resourcesMultiItemEntity0.title = "测试第一层"+(i+1);
-            for (int j = 0; j <5 ; j++) {
-                ResourcesMultiItemEntity1 resourcesMultiItemEntity1 = new ResourcesMultiItemEntity1();
-                resourcesMultiItemEntity1.title="测试第二层"+(j+1);
-                resourcesMultiItemEntity0.addSubItem(resourcesMultiItemEntity1);
-            }
-            list.add(resourcesMultiItemEntity0);
-        }
-
-        resourcesAdapter = new ResourcesAdapter(mActivity,list);
-        //设置 Footer 为 球脉冲 样式
-        refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-//        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                distanceY += dy;
-//                if (distanceY > ScreenUtil.dip2px(mContext, 20)) {
-//                    homeTitleBarLayout.setBackgroundColor(getResources().getColor(R.color.white));
-//                    if (Build.VERSION.SDK_INT > 10) {
-//                        homeTitleBarLayout.setAlpha(distanceY * 1.0f / ScreenUtil.dip2px(mContext, 100));
-//                    } else {
-//                        DISTANCE_WHEN_TO_SELECTED = 20;
-//                    }
-//                } else {
-//                    homeTitleBarLayout.setBackgroundColor(0);
-//                }
-//
-//                if (distanceY > ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && !homeTitleBarLayout.isSelected()) {
-//                    homeTitleBarLayout.setSelected(true);
-//                } else if (distanceY <= ScreenUtil.dip2px(mContext, DISTANCE_WHEN_TO_SELECTED) && homeTitleBarLayout.isSelected()) {
-//                    homeTitleBarLayout.setSelected(false);
-//                }
-//            }
-//        });
-        recyclerView.setAdapter(resourcesAdapter);
+    resourcesFragmentPresenter.setdate(page+"");
     }
 
     @Override
@@ -107,12 +86,16 @@ public class ResourcesFragment extends BaseFragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                page = 1;
+                list = new ArrayList<>();
+                resourcesFragmentPresenter.setdate(page+"");
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                resourcesFragmentPresenter.setdate(page+"");
             }
         });
         homeTitleBarLayout.setOnClickListener(new View.OnClickListener() {
@@ -135,5 +118,36 @@ public class ResourcesFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+    }
+
+    @Override
+    public void getdata(ResouceEntity resouceEntity) {
+        List<ResouceEntity.DataBean.PageBean.ListBean> listBeans = resouceEntity.getData().getPage().getList();
+        for (int i = 0; i < listBeans.size(); i++) {
+            ResourcesMultiItemEntity0 resourcesMultiItemEntity0 = new ResourcesMultiItemEntity0();
+            resourcesMultiItemEntity0.title = (String) listBeans.get(i).getName();
+            for (int j = 0; j < listBeans.get(i).getFaultResources().size(); j++) {
+                ResourcesMultiItemEntity1 resourcesMultiItemEntity1 = new ResourcesMultiItemEntity1();
+                resourcesMultiItemEntity1.title = listBeans.get(i).getFaultResources().get(j).getName();
+                resourcesMultiItemEntity0.addSubItem(resourcesMultiItemEntity1);
+            }
+            list.add(resourcesMultiItemEntity0);
+        }
+        resourcesAdapter.setNewData(list);
+        if (page != resouceEntity.getData().getPage().getPages()) {
+            page++;
+        } else {
+            refreshLayout.finishLoadMoreWithNoMoreData();
+        }
+    }
+
+    @Override
+    public void showProgressDialogView() {
+        showProgressDialog("数据加载中");
+    }
+
+    @Override
+    public void hiddenProgressDialogView() {
+        hiddenProgressDialog();
     }
 }

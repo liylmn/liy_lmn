@@ -64,6 +64,7 @@ public class DetailAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Ba
                     public void onClick(View v) {
                         ARouter.getInstance().build("/detailmessage/activity")
                                 .withString("message", ((DetailMultiItemEntity1) item).getTitle())
+                                .withString("id", ((DetailMultiItemEntity1) item).getId()+"")
                                 .navigation();
 
                     }

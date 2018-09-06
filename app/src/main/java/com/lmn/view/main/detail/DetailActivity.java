@@ -161,6 +161,7 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
             for (int j = 0; j < detailEntity.getData().getPage().getList().get(i).getSubFault().size(); j++) {
                 DetailMultiItemEntity1 DetailMultiItemEntity1 = new DetailMultiItemEntity1();
                 DetailMultiItemEntity1.title = detailEntity.getData().getPage().getList().get(i).getSubFault().get(j).getCategoryName();
+                DetailMultiItemEntity1.id = detailEntity.getData().getPage().getList().get(i).getSubFault().get(j).getId();
                 DetailMultiItemEntity0.addSubItem(DetailMultiItemEntity1);
             }
             list.add(DetailMultiItemEntity0);

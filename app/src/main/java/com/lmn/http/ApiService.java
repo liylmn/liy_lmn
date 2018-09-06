@@ -19,8 +19,12 @@ package com.lmn.http;
 
 
 import com.lmn.Entity.DetailEntity;
+import com.lmn.Entity.DetailMessageEntity;
 import com.lmn.Entity.HomeFragmentEntity;
+import com.lmn.Entity.LeaveMessageEntity;
 import com.lmn.Entity.LoginEntity;
+import com.lmn.Entity.ModifyEntity;
+import com.lmn.Entity.ResouceEntity;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -43,6 +47,23 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/fault/info")
     Observable<DetailEntity> getinfo(@Field("typeId")String typeId, @Field("pageNum")String pageNum, @Field("pageSize")String pageSize);
+
+    @FormUrlEncoded
+    @POST("api/fault/detail")
+    Observable<DetailMessageEntity> getdetailmessage(@Field("id")String id);
+
+    @FormUrlEncoded
+    @POST("api/fault/resource")
+    Observable<ResouceEntity> getresource(@Field("pageNum")String pageNum, @Field("pageSize")String pageSize);
+
+
+    @FormUrlEncoded
+    @POST("api/fault/message/add")
+    Observable<LeaveMessageEntity> leavemessage(@Field("userId")String userId, @Field("content")String content);
+
+    @FormUrlEncoded
+    @POST("api/fault/update/pwd")
+    Observable<ModifyEntity> modifypsw(@Field("studentNumber")String studentNumber, @Field("password")String password, @Field("newPassword")String newPassword);
 }
 
 

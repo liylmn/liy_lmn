@@ -13,8 +13,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.shashank.sony.fancytoastlib.FancyToast;
-
 import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -69,18 +67,9 @@ public abstract class BaseActivity extends AppCompatActivity implements UiCallba
     }
 
     protected void showShortToast(String message){
-        Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext,message,Toast.LENGTH_SHORT).show();
     }
 
-    protected void showSuccessToast(String message){
-        FancyToast.makeText(this,message,FancyToast.LENGTH_LONG,FancyToast.SUCCESS,true);
-    }
-    protected void showDefaultToast(String message){
-        FancyToast.makeText(this,message,FancyToast.LENGTH_LONG,FancyToast.SUCCESS,true);
-    }
-    protected void showErrorToast(String message){
-        FancyToast.makeText(this,message,FancyToast.LENGTH_LONG,FancyToast.DEFAULT,true);
-    }
 
     protected void showProgressDialog(){
         this.showProgressDialog(null,null);

@@ -43,7 +43,8 @@
 
         <activity
             android:name=".view.main.MainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
 
         <meta-data
             android:name="design_width"
@@ -62,13 +63,14 @@
             android:name=".view.main.detail.DetailMessageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.my.activity.ModifypswActivity"
+            android:name=".view.my.activity.modify.ModifypswActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.my.activity.LeaveMessageActivity"
+            android:name=".view.my.activity.leave.LeaveMessageActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".view.main.detail.loadmore.LoadMoreActivity"
-            android:screenOrientation="portrait" ></activity>
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

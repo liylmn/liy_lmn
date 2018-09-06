@@ -1,4 +1,4 @@
-package com.lmn.view.my.activity;
+package com.lmn.view.my.activity.modify;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,15 +10,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.lmn.MainDataManager;
 import com.lmn.R;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lmn.com.lmnlibrary.base.BaseActivity;
+import lmn.com.lmnlibrary.utils.RepeatUtils;
 
 @Route(path = "/modify/activity")
-public class ModifypswActivity extends BaseActivity {
+public class ModifypswActivity extends BaseActivity implements ModifypswContract.View {
 
 
     @BindView(R.id.et_oldpsw)
@@ -37,6 +41,9 @@ public class ModifypswActivity extends BaseActivity {
     Button btnSure;
     private boolean flag_old = false;
     private boolean flag_new = false;
+    @Inject
+    ModifypswPresenter modifypswPresenter;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_modifypsw;
@@ -44,7 +51,12 @@ public class ModifypswActivity extends BaseActivity {
 
     @Override
     public void initview() {
-
+        DaggerModifypswComponent
+                .builder()
+                .appComponent(getAppComponent())
+                .modifypswPresenterModule(new ModifypswPresenterModule(MainDataManager.getInstance(mDataManager), this))
+                .build()
+                .inject(this);
     }
 
     @Override
@@ -102,8 +114,37 @@ public class ModifypswActivity extends BaseActivity {
                     etNewpsw.setSelection(pwd_new.length());
                 break;
             case R.id.btn_sure:
+                if (RepeatUtils.isFastDoubleClick()) {
+                    if (etOldpsw.getText().toString().equals("")) {
+                        showShortToast("请输入密码");
+                        return;
+                    }
+                    if (etNewpsw.getText().toString().equals("")) {
+                        showShortToast("请输入新密码");
+                        return;
+                    }
+                    modifypswPresenter.modify(mDataManager.getSPMapData().get("phone"),etOldpsw.getText().toString(),etNewpsw.getText().toString());
+                }else {
+                    showShortToast("请不要重复点击");
+                }
 
                 break;
         }
+    }
+
+    @Override
+    public void success() {
+        showShortToast("修改成功");
+        finish();
+    }
+
+    @Override
+    public void showProgressDialogView() {
+        showProgressDialog("提交中");
+    }
+
+    @Override
+    public void hiddenProgressDialogView() {
+        hiddenProgressDialog();
     }
 }

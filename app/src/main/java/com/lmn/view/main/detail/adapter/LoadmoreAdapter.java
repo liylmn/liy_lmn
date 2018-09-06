@@ -1,11 +1,16 @@
 package com.lmn.view.main.detail.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.lmn.R;
 
 import java.util.List;
+
+import lmn.com.lmnlibrary.imageloader.ILoader;
+import lmn.com.lmnlibrary.imageloader.ImageFactory;
 
 /**
  * 作者：liy_lmn
@@ -29,6 +34,6 @@ public class LoadmoreAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-
+    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img),item,new ILoader.Options(R.mipmap.ic_launcher,R.drawable.loading_img));
     }
 }

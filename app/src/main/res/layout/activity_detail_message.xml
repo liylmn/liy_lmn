@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.lmn.widget.CustomTitleBar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -63,10 +62,19 @@
          android:textSize="35px"
          android:textColor="@color/color_333333"/>
      <ImageView
+         android:id="@+id/img_detailmessage"
          android:layout_width="match_parent"
          android:layout_height="500px"
          android:layout_margin="40px"
-         android:background="@mipmap/ic_launcher"/>
+         />
+         <TextView
+             android:id="@+id/tv_loadmore"
+             android:layout_width="match_parent"
+             android:gravity="center"
+             android:layout_height="wrap_content"
+             android:text="查看更多"
+             android:textSize="35px"
+             android:textColor="@color/color_b0b8b2"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,12 +83,13 @@
         android:textSize="35px"
         android:textColor="@color/color_333333"/>
     <TextView
+        android:id="@+id/tv_reson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50px"
         android:textSize="30px"
         android:textColor="@color/color_333333"
-        android:text="一、xxxxx\n二、xxxxxx\n三、xxxxxx"
+        android:text=""
         android:layout_marginTop="20px"
         />
      </com.zhy.autolayout.AutoLinearLayout>
