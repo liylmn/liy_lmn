@@ -7,6 +7,7 @@ import com.lmn.Entity.LeaveMessageEntity;
 import com.lmn.Entity.LoginEntity;
 import com.lmn.Entity.ModifyEntity;
 import com.lmn.Entity.ResouceEntity;
+import com.lmn.Entity.SearchEntity;
 import com.lmn.http.ApiService;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -84,6 +85,14 @@ public class MainDataManager extends BaseDataManager {
      */
     public Disposable modifypsw(String name ,String password,String newPassword,DisposableObserver<ModifyEntity> consumer) {
         return getService(ApiService.class).modifypsw(name,password,newPassword).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(consumer);
+    }
+    /*
+     *故障搜索接口
+     */
+    public Disposable search(String name,String resultType,DisposableObserver<SearchEntity> consumer) {
+        return getService(ApiService.class).search(name,resultType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(consumer);
     }

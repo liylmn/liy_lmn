@@ -25,6 +25,7 @@ import com.lmn.Entity.LeaveMessageEntity;
 import com.lmn.Entity.LoginEntity;
 import com.lmn.Entity.ModifyEntity;
 import com.lmn.Entity.ResouceEntity;
+import com.lmn.Entity.SearchEntity;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -64,6 +65,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/fault/update/pwd")
     Observable<ModifyEntity> modifypsw(@Field("studentNumber")String studentNumber, @Field("password")String password, @Field("newPassword")String newPassword);
+
+    @FormUrlEncoded
+    @POST("api/fault/search")
+    Observable<SearchEntity> search(@Field("name")String name, @Field("resultType")String resultType);
 }
 
 

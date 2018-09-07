@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".view.login.suggest.LoginAct"
+            android:name=".view.main.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,10 +41,10 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity
-            android:name=".view.main.MainActivity"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTask"/>
+        <!--<activity-->
+            <!--android:name=".view.main.MainActivity"-->
+            <!--android:screenOrientation="portrait"-->
+            <!--android:launchMode="singleTask"/>-->
 
         <meta-data
             android:name="design_width"

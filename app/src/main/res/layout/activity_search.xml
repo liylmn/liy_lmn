@@ -6,14 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.lmn.view.search.SearchActivity">
 
-    <scut.carson_ho.searchview.SearchView
-        android:id="@+id/search_view"
+    <EditText
+        android:id="@+id/edt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textSizeSearch="5dp"
-        app:textColorSearch="#9b9b9b"
-        app:textHintSearch="输入查询关键字"
-        app:searchBlockHeight="150"
-        app:searchBlockColor="#ffffff"
-        />
+        android:layout_margin="15dp"/>
 </android.support.constraint.ConstraintLayout>

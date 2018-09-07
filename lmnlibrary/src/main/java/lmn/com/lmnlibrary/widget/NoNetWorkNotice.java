@@ -63,7 +63,6 @@ public class NoNetWorkNotice {
         isShowing = false;
         //wdm.removeView(mView); //此句依然会导致MainActivity退出时导致泄漏窗体 所以使用下一句
         wdm.removeViewImmediate(mView);
-        mView = null;
     }
 
     public boolean isShowing() {

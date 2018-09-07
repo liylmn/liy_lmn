@@ -61,6 +61,7 @@ public class MainHomeFragment extends BaseFragment implements HomeContract.View{
                 .build()
                 .inject(this);
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
+        refreshLayout.finishLoadMoreWithNoMoreData();
         mainhomeAdapter=new MainhomeAdapter(R.layout.item_home);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(mainhomeAdapter);
@@ -77,6 +78,7 @@ public class MainHomeFragment extends BaseFragment implements HomeContract.View{
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                mPresenter.getHomeData();
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -88,7 +90,9 @@ public class MainHomeFragment extends BaseFragment implements HomeContract.View{
         homeTitleBarBgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/search/activity").navigation();
+                ARouter.getInstance().build("/search/activity")
+                        .withString("resultType","1")
+                        .navigation();
             }
         });
     }

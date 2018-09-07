@@ -105,7 +105,9 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.home_title_bar_layout:
-                ARouter.getInstance().build("/search/activity").navigation();
+                ARouter.getInstance().build("/search/activity")
+                        .withString("resultType","1")
+                        .navigation();
                 break;
             case R.id.tv_loadmore:
                 ARouter.getInstance().build("/loadmore/activity")

@@ -101,7 +101,9 @@ public class ResourcesFragment extends BaseFragment implements ResourcesFragment
         homeTitleBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/search/activity").navigation();
+                ARouter.getInstance().build("/search/activity")
+                        .withString("resultType","2")
+                        .navigation();
             }
         });
     }

@@ -2,57 +2,190 @@ package com.lmn.view.search;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.lmn.Entity.SearchEntity;
+import com.lmn.MainDataManager;
 import com.lmn.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import scut.carson_ho.searchview.ICallBack;
-import scut.carson_ho.searchview.SearchView;
-import scut.carson_ho.searchview.bCallBack;
+import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
+import lmn.com.lmnlibrary.GlobalAppComponent;
+
 @Route(path = "/search/activity")
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchContract.View {
 
-    @BindView(R.id.search_view)
-    SearchView searchView;
+    private static final String TAG = "MainActivity";
+    private EditText editText;
     private CustomPopupWindow mPop; //显示搜索联想的pop
     private ListView searchLv; //搜索联想结果的列表
     private ArrayAdapter mAdapter; //ListView的适配器
     private List<String> mSearchList = new ArrayList<>(); //搜索结果的数据源
-
+    private PublishSubject<String> mPublishSubject;
+    private CompositeDisposable mCompositeDisposable;
+    @Inject
+     SearchPresenter searchPresenter;
+    @Autowired
+    String resultType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        ButterKnife.bind(this);
+        DaggerSearchComponent
+                .builder()
+                .appComponent( GlobalAppComponent.getAppComponent())
+                .searchPresenterModule(new SearchPresenterModule(MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()),this))
+                .build()
+                .inject(this);
+        initEdt();
+        initPop();
+    }
 
-        // 4. 设置点击搜索按键后的操作（通过回调接口）
-        // 参数 = 搜索框输入的内容
-        searchView.setOnClickSearch(new ICallBack() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCompositeDisposable.clear();
+        mPop.dismiss();
+    }
+
+    private void initEdt() {
+        editText = (EditText) findViewById(R.id.edt);
+        editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void SearchAciton(String string) {
-                System.out.println("我收到了" + string);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().trim().isEmpty()) {
+                    mPop.dismiss();
+                } else {
+                    //输入内容非空的时候才开始搜索
+                    startSearch(s.toString());
+                }
             }
         });
 
-        // 5. 设置点击返回按键后的操作（通过回调接口）
-        searchView.setOnClickBack(new bCallBack() {
-            @Override
-            public void BackAciton() {
-                finish();
-            }
-        });
-//        initPop();
+        mPublishSubject = PublishSubject.create();
+        mPublishSubject.debounce(200, TimeUnit.MILLISECONDS) //这里我们限制只有在输入字符200毫秒后没有字符没有改变时才去请求网络，节省了资源
+                .filter(new Predicate<String>() { //对源Observable产生的结果按照指定条件进行过滤，只有满足条件的结果才会提交给订阅者
 
+                    @Override
+                    public boolean test(String s) throws Exception {
+                        //当搜索词为空时，不发起请求
+                        return s.length() > 0;
+                    }
+                })
+                /**
+                 * flatmap:把Observable产生的结果转换成多个Observable，然后把这多个Observable
+                 “扁平化”成一个Observable，并依次提交产生的结果给订阅者
+
+                 *concatMap:操作符flatMap操作符不同的是，concatMap操作符在处理产生的Observable时，
+                 采用的是“连接(concat)”的方式，而不是“合并(merge)”的方式，
+                 这就能保证产生结果的顺序性，也就是说提交给订阅者的结果是按照顺序提交的，不会存在交叉的情况
+
+                 *switchMap:与flatMap操作符不同的是，switchMap操作符会保存最新的Observable产生的
+                 结果而舍弃旧的结果
+                 **/
+                .switchMap(new Function<String, ObservableSource<String>>() {
+
+                    @Override
+                    public ObservableSource<String> apply(String query) throws Exception {
+                        return getSearchObservable(query);
+                    }
+
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableObserver<String>() {
+
+                    @Override
+                    public void onNext(String s) {
+                        //显示搜索联想的结果
+                        showSearchResult(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable = new CompositeDisposable();
+        mCompositeDisposable.add(mCompositeDisposable);
+    }
+
+    //开始搜索
+    private void startSearch(String query) {
+        mPublishSubject.onNext(query);
+    }
+
+    private Observable<String> getSearchObservable(final String query) {
+        return Observable.create(new ObservableOnSubscribe<String>() {
+
+            @Override
+            public void subscribe(ObservableEmitter<String> observableEmitter) throws Exception {
+                //注意：这里只是模仿求取服务器数据，实际开发中需要你根据这个输入的关键字query去请求数据
+                Log.d(TAG, "开始请求，关键词为：" + query);
+                try {
+                    Thread.sleep(100); //模拟网络请求，耗时100毫秒
+                } catch (InterruptedException e) {
+                    if (!observableEmitter.isDisposed()) {
+                        observableEmitter.onError(e);
+                    }
+                }
+                if (!(query.contains("科") || query.contains("耐") || query.contains("七"))) {
+                    //没有联想结果，则关闭pop
+                    mPop.dismiss();
+                    return;
+                }
+                Log.d("SearchActivity", "结束请求，关键词为：" + query);
+                observableEmitter.onNext(query);
+                observableEmitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+
+    /**
+     * 显示搜索结果
+     */
+    private void showSearchResult(String keyWords) {
+        mSearchList.clear(); //先清空数据源
+        searchPresenter.searchdate(keyWords,resultType);
     }
 
     /**
@@ -71,10 +204,22 @@ public class SearchActivity extends AppCompatActivity {
         searchLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(Ser, SearchResultActivity.class);
+//                Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
 //                intent.putExtra("result", mSearchList.get(position));
 //                startActivity(intent);
+
             }
         });
+    }
+
+
+    @Override
+    public void getdata(SearchEntity searchEntity) {
+        mSearchList=new ArrayList<>();
+        for (int i = 0; i <searchEntity.getData().getList().size() ; i++) {
+            mSearchList.add(searchEntity.getData().getList().get(i).getName());
+        }
+        mAdapter.notifyDataSetChanged();
+        mPop.showAsDropDown(editText, 0, 0); //显示搜索联想列表的pop
     }
 }

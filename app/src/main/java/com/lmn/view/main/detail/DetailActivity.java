@@ -113,7 +113,9 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
         homeTitleBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ARouter.getInstance().build("/search/activity").navigation();
+                ARouter.getInstance().build("/search/activity")
+                        .withString("resultType","1")
+                        .navigation();
             }
         });
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
@@ -149,7 +151,9 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
 
     @OnClick(R.id.home_title_bar_layout)
     public void onViewClicked() {
-        ARouter.getInstance().build("/search/activity").navigation();
+        ARouter.getInstance().build("/search/activity")
+                .withString("resultType","1")
+                .navigation();
     }
 
     @Override

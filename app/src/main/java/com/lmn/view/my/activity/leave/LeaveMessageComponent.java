@@ -2,7 +2,7 @@ package com.lmn.view.my.activity.leave;
 
 import dagger.Component;
 import lmn.com.lmnlibrary.AppComponent;
-import lmn.com.lmnlibrary.PerFragment;
+import lmn.com.lmnlibrary.PerActivity;
 
 /**
  * 作者：liy_lmn
@@ -10,7 +10,7 @@ import lmn.com.lmnlibrary.PerFragment;
  * 邮箱：749960061@qq.com
  * 说明：日常工作或学习
  */
-@PerFragment
+@PerActivity
 @Component(dependencies = AppComponent.class,modules = LeaveMessagePresenterModule.class)
 public interface LeaveMessageComponent {
     void inject(LeaveMessageActivity leaveMessageActivity);
