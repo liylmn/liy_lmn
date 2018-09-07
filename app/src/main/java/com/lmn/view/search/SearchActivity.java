@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.lmn.Entity.SearchEntity;
 import com.lmn.MainDataManager;
 import com.lmn.R;
@@ -50,8 +51,10 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     private CompositeDisposable mCompositeDisposable;
     @Inject
      SearchPresenter searchPresenter;
-    @Autowired
+    @Autowired(name = "resultType")
     String resultType;
+    private SearchEntity mysearchEntity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,11 +171,6 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                         observableEmitter.onError(e);
                     }
                 }
-                if (!(query.contains("科") || query.contains("耐") || query.contains("七"))) {
-                    //没有联想结果，则关闭pop
-                    mPop.dismiss();
-                    return;
-                }
                 Log.d("SearchActivity", "结束请求，关键词为：" + query);
                 observableEmitter.onNext(query);
                 observableEmitter.onComplete();
@@ -204,10 +202,10 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         searchLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(MainActivity.this, SearchResultActivity.class);
-//                intent.putExtra("result", mSearchList.get(position));
-//                startActivity(intent);
-
+                ARouter.getInstance().build("/detailmessage/activity")
+                        .withString("message",  mysearchEntity.getData().getList().get(position).getName())
+                        .withString("id", mysearchEntity.getData().getList().get(position).getId()+"")
+                        .navigation();
             }
         });
     }
@@ -215,10 +213,12 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     @Override
     public void getdata(SearchEntity searchEntity) {
-        mSearchList=new ArrayList<>();
+        mysearchEntity=searchEntity;
+        List<String> mylist=new ArrayList<>();
         for (int i = 0; i <searchEntity.getData().getList().size() ; i++) {
-            mSearchList.add(searchEntity.getData().getList().get(i).getName());
+            mylist.add(searchEntity.getData().getList().get(i).getName());
         }
+        mSearchList.addAll(mylist);
         mAdapter.notifyDataSetChanged();
         mPop.showAsDropDown(editText, 0, 0); //显示搜索联想列表的pop
     }
