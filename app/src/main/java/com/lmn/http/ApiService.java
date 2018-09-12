@@ -28,9 +28,13 @@ import com.lmn.Entity.ResouceEntity;
 import com.lmn.Entity.SearchEntity;
 
 import io.reactivex.Observable;
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 
 /**
  * ApiService
@@ -69,6 +73,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/fault/search")
     Observable<SearchEntity> search(@Field("name")String name, @Field("resultType")String resultType);
+
+    @Streaming
+    @GET
+    Observable<ResponseBody> download(@Url String name);
 }
 
 

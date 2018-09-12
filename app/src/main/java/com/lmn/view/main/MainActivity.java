@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseActivity;
+import lmn.com.lmnlibrary.utils.SaveFileUtil;
 import lmn.com.lmnlibrary.widget.bottomnavigation.BadgeItem;
 import lmn.com.lmnlibrary.widget.bottomnavigation.BottomNavigationBar;
 import lmn.com.lmnlibrary.widget.bottomnavigation.BottomNavigationItem;
@@ -36,6 +37,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private FragmentManager mFragmentManager;
     @Override
     public void initview() {
+        SaveFileUtil.isGrantExternalRW(this);
         initBottomNavigation();
         mFragmentManager = getSupportFragmentManager();
         mMainHomeFragment = (MainHomeFragment) mFragmentManager.findFragmentByTag("home_fg");

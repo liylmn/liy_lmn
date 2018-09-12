@@ -9,6 +9,33 @@ import com.lmn.view.resources.adapter.ResourcesAdapter;
  */
 public class ResourcesMultiItemEntity1 extends AbstractExpandableItem implements MultiItemEntity {
     public String title;
+    public String downloadfilename;
+    public String baseurl;
+    public String url;
+
+    public String getDownloadfilename() {
+        return downloadfilename;
+    }
+
+    public void setDownloadfilename(String downloadfilename) {
+        this.downloadfilename = downloadfilename;
+    }
+
+    public String getBaseurl() {
+        return baseurl;
+    }
+
+    public void setBaseurl(String baseurl) {
+        this.baseurl = baseurl;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     @Override
     public int getItemType() {

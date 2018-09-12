@@ -128,9 +128,15 @@ public class ResourcesFragment extends BaseFragment implements ResourcesFragment
         for (int i = 0; i < listBeans.size(); i++) {
             ResourcesMultiItemEntity0 resourcesMultiItemEntity0 = new ResourcesMultiItemEntity0();
             resourcesMultiItemEntity0.title = (String) listBeans.get(i).getName();
+
             for (int j = 0; j < listBeans.get(i).getFaultResources().size(); j++) {
                 ResourcesMultiItemEntity1 resourcesMultiItemEntity1 = new ResourcesMultiItemEntity1();
                 resourcesMultiItemEntity1.title = listBeans.get(i).getFaultResources().get(j).getName();
+
+                resourcesMultiItemEntity1.downloadfilename = (String) listBeans.get(i).getFaultResources().get(j).getType();
+                resourcesMultiItemEntity1.baseurl = resouceEntity.getData().getBasePath();
+                resourcesMultiItemEntity1.url = (String) listBeans.get(i).getFaultResources().get(j).getUrl();
+
                 resourcesMultiItemEntity0.addSubItem(resourcesMultiItemEntity1);
             }
             list.add(resourcesMultiItemEntity0);

@@ -71,6 +71,9 @@
         <activity android:name=".view.main.detail.loadmore.LoadMoreActivity"
             android:screenOrientation="portrait"
             ></activity>
+
+        <!-- 注册service -->
+        <service android:name="com.yaoxiaowen.download.service.DownloadService"/>
     </application>
 
 </manifest>

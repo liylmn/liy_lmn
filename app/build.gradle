@@ -71,5 +71,4 @@ dependencies {
     implementation 'com.android.support:cardview-v7:27.0.1'
     compile 'com.carson_ho:SearchLayout:1.0.1'
     compile 'com.alibaba:fastjson:1.1.70.android'
-
 }
