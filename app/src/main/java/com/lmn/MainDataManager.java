@@ -114,8 +114,8 @@ public class MainDataManager extends BaseDataManager {
     /*
      *故障搜索接口
      */
-    public Disposable download(String url, final String filePath, DisposableObserver<ResponseBody> consumer, final DownloadFileListener downloadFileListener) {
-        return getService(ApiService.class).download("http://download.sj.qq.com/upload/connAssitantDownload/upload/MobileAssistant_1.apk")
+    public Disposable download(String url, final String filename, DisposableObserver<ResponseBody> consumer, final DownloadFileListener downloadFileListener) {
+        return getService(ApiService.class).download(url)
                 .subscribeOn(Schedulers.io())
                 .map(new Function<ResponseBody, ResponseBody>() {
                     @Override
@@ -127,7 +127,7 @@ public class MainDataManager extends BaseDataManager {
                 .doOnNext(new Consumer<ResponseBody>() {
                     @Override
                     public void accept(ResponseBody responseBody) throws Exception {
-                        SaveFileUtil.saveInputStream(responseBody, Environment.getExternalStorageDirectory().getAbsolutePath() + "/zhongchetaiyuan/", "MobileAssistant_1.apk",
+                        SaveFileUtil.saveInputStream(responseBody, Environment.getExternalStorageDirectory().getAbsolutePath() + "/zhongchetaiyuan/", filename,
                                 downloadFileListener);
                     }
                 })

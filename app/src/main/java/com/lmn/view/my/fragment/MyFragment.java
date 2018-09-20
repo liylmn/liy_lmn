@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lmn.R;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -71,7 +73,13 @@ public class MyFragment extends BaseFragment {
                 ARouter.getInstance().build("/leavemessage/activity").navigation();
                 break;
             case R.id.my_btn_back:
-
+                HashMap<String, String> map = new HashMap<>();
+                map.put("username","");
+                map.put("number","");
+                map.put("userId","");
+                mDataManager.saveSPMapData(map);
+                ARouter.getInstance().build("/lmn/login").navigation();
+                getActivity().finish();
                 break;
         }
     }

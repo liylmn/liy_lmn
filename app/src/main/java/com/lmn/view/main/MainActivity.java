@@ -2,7 +2,9 @@ package com.lmn.view.main;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.lmn.MainDataManager;
@@ -35,6 +37,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     private ResourcesFragment resourcesFragment;
     private MyFragment myFragment;
     private FragmentManager mFragmentManager;
+
     @Override
     public void initview() {
         SaveFileUtil.isGrantExternalRW(this);
@@ -95,7 +98,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
         bottomNavigationBar
                 .addItem(new BottomNavigationItem(R.drawable.axh, "").setInactiveIconResource(R.drawable.axg).setActiveColorResource(R.color.colorAccent))
-                .addItem(new BottomNavigationItem(R.drawable.axf, "").setInactiveIconResource(R.drawable.axe).setActiveColorResource(R.color.colorAccent))
+                .addItem(new BottomNavigationItem(R.drawable.resouce_1, "").setInactiveIconResource(R.drawable.resource_2).setActiveColorResource(R.color.colorAccent))
                 .addItem(new BottomNavigationItem(R.drawable.axj, "").setInactiveIconResource(R.drawable.axi).setActiveColorResource(R.color.colorAccent))
                 .setFirstSelectedPosition(0)
                 .initialise();
@@ -130,7 +133,7 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
-        unbinder=ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
 
     }
 
@@ -147,5 +150,25 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
     @Override
     public void hiddenProgressDialogView() {
 
+    }
+
+    // 用来计算返回键的点击间隔时间
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                //弹出提示，可以有多种方式
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

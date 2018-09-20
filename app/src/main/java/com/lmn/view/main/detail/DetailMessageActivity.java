@@ -88,7 +88,7 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
             }
         }
         tvReson.setText(stringBuffer.toString());
-        ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getUrl(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
+        ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
     }
 
     @Override

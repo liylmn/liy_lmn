@@ -88,7 +88,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).download("", "", new DisposableObserver<ResponseBody>() {
+                                        MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).download(((ResourcesMultiItemEntity1) item).getBaseurl()+((ResourcesMultiItemEntity1) item).getUrl(), ((ResourcesMultiItemEntity1) item).getDownloadfilename(), new DisposableObserver<ResponseBody>() {
                                                     @Override
                                                     public void onNext(ResponseBody responseBody) {
 

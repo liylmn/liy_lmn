@@ -38,7 +38,7 @@ import lmn.com.lmnlibrary.utils.DialogUtil;
  * Created by WZH on 2017/3/25.
  */
 @Route(path = "/lmn/login")
-public class LoginAct extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener ,LoginContract.View{
+public class LoginAct extends FragmentActivity implements View.OnClickListener, KeyboardWatcher.SoftKeyboardStateListener, LoginContract.View {
     private DrawableTextView logo;
     private EditText et_mobile;
     private EditText et_password;
@@ -56,9 +56,19 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
     private View root;
     @Inject
     LoginPresenter mPresenter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String username=MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).getSPData("username");
+        String number=MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).getSPData("number");
+        String userId=MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).getSPData("userId");
+        if (username!=null&&!username.equals("")
+                &&number!=null&&!number.equals("")
+                &&userId!=null&&!userId.equals("")){
+            ARouter.getInstance().build("/main/activity").navigation();
+            finish();
+        }
         setContentView(R.layout.activity_login);
         initView();
         initListener();
@@ -68,12 +78,13 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
 
     private void initView() {
         DaggerLoginComponent.builder()
-                .appComponent( GlobalAppComponent.getAppComponent())
+                .appComponent(GlobalAppComponent.getAppComponent())
                 .loginPresenterModule(new LoginPresenterModule(this, MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager())))
                 .build()
                 .inject(this);
         logo = (DrawableTextView) findViewById(R.id.logo);
         et_mobile = (EditText) findViewById(R.id.et_mobile);
+        et_mobile.setText(MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).getSPData("phone"));
         et_password = (EditText) findViewById(R.id.et_password);
         iv_clean_phone = (ImageView) findViewById(R.id.iv_clean_phone);
         clean_password = (ImageView) findViewById(R.id.clean_password);
@@ -122,6 +133,7 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 if (!TextUtils.isEmpty(s) && clean_password.getVisibility() == View.GONE) {
@@ -143,7 +155,7 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
             @Override
             public void onClick(View v) {
 
-                MaterialDialog materialDialog=new MaterialDialog.Builder(LoginAct.this)
+                MaterialDialog materialDialog = new MaterialDialog.Builder(LoginAct.this)
                         .title("")
                         .content("请联系管理员更改密码")
                         .positiveText("确定")
@@ -211,15 +223,15 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
                 finish();
                 break;
             case R.id.btn_login:
-                if (et_password.getText().toString().equals("")){
-                    Toast.makeText(LoginAct.this,"请输入手机号",Toast.LENGTH_SHORT).show();
+                if (et_password.getText().toString().equals("")) {
+                    Toast.makeText(LoginAct.this, "请输入手机号", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (et_password.getText().toString().equals("")){
-                    Toast.makeText(LoginAct.this,"请输入密码",Toast.LENGTH_SHORT).show();
+                if (et_password.getText().toString().equals("")) {
+                    Toast.makeText(LoginAct.this, "请输入密码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                showProgressDialog("登录中",null);
+                showProgressDialog("登录中", null);
                 mPresenter.login();
                 break;
             case R.id.iv_show_pwd:
@@ -275,19 +287,20 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
         mAnimatorTranslateY.start();
         zoomOut(logo);
     }
+
     private Dialog loadingDialog;
 
-    private  void showProgressDialog(String msg , DialogInterface.OnCancelListener listener){
-        if(loadingDialog == null){
+    private void showProgressDialog(String msg, DialogInterface.OnCancelListener listener) {
+        if (loadingDialog == null) {
             loadingDialog = DialogUtil.createLoadingDialog(this, msg, listener);
-        }else if(!loadingDialog.isShowing()){
+        } else if (!loadingDialog.isShowing()) {
             loadingDialog.show();
         }
 
     }
 
-    private void hiddenProgressDialog(){
-        if(loadingDialog != null && loadingDialog.isShowing()){
+    private void hiddenProgressDialog() {
+        if (loadingDialog != null && loadingDialog.isShowing()) {
             loadingDialog.dismiss();
         }
     }
@@ -297,6 +310,7 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
     public void loginsuccess() {
         hiddenProgressDialog();
         ARouter.getInstance().build("/main/activity").navigation();
+        finish();
     }
 
     @Override
