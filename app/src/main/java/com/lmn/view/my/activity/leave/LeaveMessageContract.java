@@ -16,5 +16,6 @@ public interface LeaveMessageContract {
 
     interface Presenter {
         void leave(String userid,String content);
+        void destory();
     }
 }

@@ -18,5 +18,6 @@ public interface DetailMessageContract {
 
     interface Presenter {
         void setdate(String id);
+        void destory();
     }
 }

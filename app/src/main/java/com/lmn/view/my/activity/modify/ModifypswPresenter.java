@@ -53,4 +53,11 @@ public class ModifypswPresenter extends BasePresenter implements ModifypswContra
         }
     }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }

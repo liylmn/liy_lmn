@@ -83,4 +83,10 @@ public class LeaveMessageActivity extends BaseActivity implements LeaveMessageCo
     public void hiddenProgressDialogView() {
         hiddenProgressDialog();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        leaveMessagePresenter.destory();
+    }
 }

@@ -16,6 +16,7 @@ public interface HomeContract {
 
     interface Presenter {
         void getHomeData();
+        void destory();
     }
 
 }

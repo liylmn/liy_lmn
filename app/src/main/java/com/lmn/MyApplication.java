@@ -6,6 +6,7 @@ import android.support.multidex.MultiDex;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.squareup.leakcanary.LeakCanary;
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 
 import lmn.com.lmnlibrary.CommonConfig;
@@ -34,7 +35,7 @@ public class MyApplication extends Application {
         GlobalAppComponent.init(this);
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-//        Bugly.init(this, "83d40dbcae", true);
+        Bugly.init(this, "83d40dbcae", true);
     }
 
 

@@ -158,4 +158,10 @@ public class ResourcesFragment extends BaseFragment implements ResourcesFragment
     public void hiddenProgressDialogView() {
         hiddenProgressDialog();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        resourcesFragmentPresenter.destory();
+    }
 }

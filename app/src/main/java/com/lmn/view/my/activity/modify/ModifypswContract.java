@@ -16,5 +16,6 @@ public interface ModifypswContract {
 
     interface Presenter {
         void modify(String studentNumber,String password,String newPassword);
+        void destory();
     }
 }

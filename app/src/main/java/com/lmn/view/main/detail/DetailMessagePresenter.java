@@ -47,4 +47,11 @@ public class DetailMessagePresenter extends BasePresenter implements DetailMessa
         }
     }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }

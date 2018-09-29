@@ -52,4 +52,11 @@ public class HomePresenter extends BasePresenter implements HomeContract.Present
             }
         }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }

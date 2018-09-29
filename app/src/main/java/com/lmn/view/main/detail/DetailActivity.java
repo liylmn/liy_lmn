@@ -188,5 +188,9 @@ public class DetailActivity extends BaseActivity implements DetailContract.View 
         hiddenProgressDialog();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        detailPresenter.destory();
+    }
 }

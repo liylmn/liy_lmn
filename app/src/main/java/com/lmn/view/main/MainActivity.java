@@ -171,4 +171,10 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
 
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.destory();
+    }
 }

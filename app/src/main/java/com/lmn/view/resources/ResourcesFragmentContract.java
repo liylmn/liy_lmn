@@ -18,5 +18,6 @@ public interface ResourcesFragmentContract {
 
     interface Presenter {
         void setdate(String id);
+        void destory();
     }
 }

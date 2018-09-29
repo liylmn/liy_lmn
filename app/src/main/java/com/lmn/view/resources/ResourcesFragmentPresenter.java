@@ -52,4 +52,11 @@ public class ResourcesFragmentPresenter extends BasePresenter implements Resourc
         }
     }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }

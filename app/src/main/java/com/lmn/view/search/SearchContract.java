@@ -16,5 +16,6 @@ public class SearchContract {
 
     interface Presenter {
         void searchdate(String name,String resultType);
+        void destory();
     }
 }

@@ -256,6 +256,7 @@ public class LoginAct extends FragmentActivity implements View.OnClickListener, 
     protected void onDestroy() {
         super.onDestroy();
         keyboardWatcher.removeSoftKeyboardStateListener(this);
+        mPresenter.destory();
     }
 
     @Override

@@ -18,5 +18,6 @@ public interface DetailContract {
 
     interface Presenter {
         void setdate(String typeId,int pageNum);
+        void destory();
     }
 }

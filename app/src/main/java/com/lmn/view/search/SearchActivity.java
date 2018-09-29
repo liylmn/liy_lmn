@@ -74,6 +74,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         super.onDestroy();
         mCompositeDisposable.clear();
         mPop.dismiss();
+        searchPresenter.destory();
     }
 
     private void initEdt() {
@@ -222,4 +223,6 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         mAdapter.notifyDataSetChanged();
         mPop.showAsDropDown(editText, 0, 0); //显示搜索联想列表的pop
     }
+
+
 }

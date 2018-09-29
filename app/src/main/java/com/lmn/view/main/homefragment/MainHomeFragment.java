@@ -119,4 +119,10 @@ public class MainHomeFragment extends BaseFragment implements HomeContract.View{
     public void hiddenProgressDialogView() {
         hiddenProgressDialog();
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.destory();
+    }
 }

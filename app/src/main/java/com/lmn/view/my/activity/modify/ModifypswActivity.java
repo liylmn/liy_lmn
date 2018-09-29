@@ -147,4 +147,10 @@ public class ModifypswActivity extends BaseActivity implements ModifypswContract
     public void hiddenProgressDialogView() {
         hiddenProgressDialog();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        modifypswPresenter.destory();
+    }
 }

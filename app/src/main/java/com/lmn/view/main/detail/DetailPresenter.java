@@ -53,4 +53,11 @@ public class DetailPresenter extends BasePresenter implements DetailContract.Pre
         }
     }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }

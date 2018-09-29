@@ -116,4 +116,10 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
                 break;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        detailMessagePresenter.destory();
+    }
 }

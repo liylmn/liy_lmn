@@ -17,6 +17,7 @@ public interface LoginContract {
 
     interface Presenter {
         void login();
+        void destory();
     }
 
 }

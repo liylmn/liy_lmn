@@ -50,4 +50,11 @@ public class SearchPresenter extends BasePresenter implements SearchContract.Pre
             }
         }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }

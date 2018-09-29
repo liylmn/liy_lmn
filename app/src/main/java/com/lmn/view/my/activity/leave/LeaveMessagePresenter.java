@@ -55,4 +55,11 @@ public class LeaveMessagePresenter extends BasePresenter implements LeaveMessage
             }
         }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }

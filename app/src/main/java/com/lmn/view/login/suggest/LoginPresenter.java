@@ -63,4 +63,11 @@ public class LoginPresenter extends BasePresenter implements LoginContract.Prese
         }
     }));
     }
+
+    @Override
+    public void destory() {
+        if(disposables != null){
+            disposables.clear();
+        }
+    }
 }
