@@ -35,7 +35,7 @@ public class MyApplication extends Application {
         GlobalAppComponent.init(this);
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         // 调试时，将第三个参数改为true
-        Bugly.init(this, "83d40dbcae", true);
+        Bugly.init(this, "ef66e004c8", true);
     }
 
 
