@@ -2,9 +2,13 @@ package com.lmn.view.resources.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -22,6 +26,8 @@ import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 import lmn.com.lmnlibrary.GlobalAppComponent;
+import lmn.com.lmnlibrary.imageloader.ILoader;
+import lmn.com.lmnlibrary.imageloader.ImageFactory;
 import lmn.com.lmnlibrary.listener.DownloadFileListener;
 import okhttp3.ResponseBody;
 
@@ -73,88 +79,129 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                         }
                     }
                 });
+                ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.loading_img));
                 break;
             case TYPE_LEVEL_1:
                 final ResourcesMultiItemEntity1 item1 = (ResourcesMultiItemEntity1) item;
                 helper.setText(R.id.title, item1.title);
+//                ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img_head),((ResourcesMultiItemEntity1) item).getImgurl(),new ILoader.Options(R.mipmap.ic_launcher,R.mipmap.head_img_1));
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                                .title("下载附件")
-                                .content(((ResourcesMultiItemEntity1) item).getDownloadfilename())
-                                .positiveText("下载")
-                                .negativeText("取消")
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                        MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).download(((ResourcesMultiItemEntity1) item).getBaseurl()+((ResourcesMultiItemEntity1) item).getUrl(), ((ResourcesMultiItemEntity1) item).getDownloadfilename(), new DisposableObserver<ResponseBody>() {
-                                                    @Override
-                                                    public void onNext(ResponseBody responseBody) {
+                        final String fileUrl=Environment.getExternalStorageDirectory().getAbsolutePath() + "/zhongchetaiyuan/"+item1.getDownloadfilename();
+                        final File file=new File(fileUrl);
+                        if (file.exists()){
+                            MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                                    .title("打开文件")
+                                    .content(((ResourcesMultiItemEntity1) item).getDownloadfilename())
+                                    .positiveText("打开")
+                                    .negativeText("取消")
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            try {
+//                                                Intent intent2 = new Intent("android.intent.action.VIEW");
+//                                                intent2.addCategory("android.intent.category.DEFAULT");
+//                                                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                                Uri uri = Uri.fromFile(file);
+//                                                //application/msword
+//                                                //application/vnd.ms-excel
+//                                                if (fileUrl.contains(".docx")){
+//                                                    intent2.setDataAndType(uri, "application/msword");
+//                                                }else if (fileUrl.contains(".xlsx")){
+//                                                    intent2.setDataAndType(uri, "application/vnd.ms-excel");
+//                                                }else {
+//                                                    intent2.setDataAndType(uri, "text/plain");
+//                                                }
+//                                                mContext.startActivity(intent2);
+                                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                intent.setDataAndType(Uri.fromFile(file), "file/*");
+                                               mContext.startActivity(intent);
+                                            } catch (Exception e) {
+                                                //没有安装第三方的软件会提示
+                                                Toast toast = Toast.makeText(mContext, "没有找到打开该文件的应用程序", Toast.LENGTH_SHORT);
+                                                toast.show();
+                                            }
+                                            }
+                                    }).show();
+                        }else {
+                            MaterialDialog materialDialog = new MaterialDialog.Builder(context)
+                                    .title("下载附件")
+                                    .content(((ResourcesMultiItemEntity1) item).getDownloadfilename())
+                                    .positiveText("下载")
+                                    .negativeText("取消")
+                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()).download(((ResourcesMultiItemEntity1) item).getBaseurl() + ((ResourcesMultiItemEntity1) item).getUrl(), ((ResourcesMultiItemEntity1) item).getDownloadfilename(), new DisposableObserver<ResponseBody>() {
+                                                        @Override
+                                                        public void onNext(ResponseBody responseBody) {
 
+                                                        }
+
+                                                        @Override
+                                                        public void onError(Throwable e) {
+
+                                                        }
+
+                                                        @Override
+                                                        public void onComplete() {
+
+                                                        }
+                                                    }, new DownloadFileListener() {
+                                                        @Override
+                                                        public void onStart() {
+                                                            Activity activity = (Activity) context;
+                                                            activity.runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Toast.makeText(context, "开始下载", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onProgress(final int currentLength) {
+                                                            Activity activity = (Activity) context;
+                                                            activity.runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Log.e("下载进度", currentLength + "%");
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onFinish(final String localPath) {
+                                                            Activity activity = (Activity) context;
+                                                            activity.runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Toast.makeText(context, "下载完成，保存路径" + localPath, Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(String erroInfo) {
+
+                                                        }
                                                     }
-
-                                                    @Override
-                                                    public void onError(Throwable e) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onComplete() {
-
-                                                    }
-                                                }, new DownloadFileListener() {
-                                                    @Override
-                                                    public void onStart() {
-                                                        Activity activity=(Activity)context;
-                                                        activity.runOnUiThread(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                Toast.makeText(context,"开始下载",Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-                                                    }
-
-                                                    @Override
-                                                    public void onProgress(final int currentLength) {
-                                                        Activity activity=(Activity)context;
-                                                        activity.runOnUiThread(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                Log.e("下载进度",currentLength+"%");
-                                                            }
-                                                        });
-                                                    }
-
-                                                    @Override
-                                                    public void onFinish(final String localPath) {
-                                                        Activity activity=(Activity)context;
-                                                        activity.runOnUiThread(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                Toast.makeText(context,"下载完成，保存路径"+localPath,Toast.LENGTH_SHORT).show();
-                                                            }
-                                                        });
-                                                    }
-
-                                                    @Override
-                                                    public void onFailure(String erroInfo) {
-
-                                                    }
-                                                }
-                                        );
+                                            );
 
                                         }
                                     })
-                                            .
+                                    .show();
+                        }
 
-                                    show();
-                                }
-                    });
+                    }
+                });
                 break;
-                }
-
         }
+
+    }
 
     private File getDir() {
         if (dir != null && dir.exists()) {

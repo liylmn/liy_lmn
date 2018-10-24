@@ -9,6 +9,7 @@ import com.lmn.view.main.detail.adapter.DetailAdapter;
  */
 public class DetailMultiItemEntity0 extends AbstractExpandableItem<DetailMultiItemEntity1> implements MultiItemEntity {
     public String title;
+    public String imgurl;
 
     @Override
     public int getItemType() {
@@ -26,5 +27,13 @@ public class DetailMultiItemEntity0 extends AbstractExpandableItem<DetailMultiIt
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
 }

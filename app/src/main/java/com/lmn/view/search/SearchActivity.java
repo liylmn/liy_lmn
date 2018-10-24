@@ -183,7 +183,6 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
      * 显示搜索结果
      */
     private void showSearchResult(String keyWords) {
-        mSearchList.clear(); //先清空数据源
         searchPresenter.searchdate(keyWords,resultType);
     }
 
@@ -200,6 +199,18 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
         searchLv = (ListView) mPop.getItemView(R.id.search_list_lv);
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSearchList);
         searchLv.setAdapter(mAdapter);
+    }
+
+
+    @Override
+    public void getdata(SearchEntity searchEntity) {
+        mysearchEntity=searchEntity;
+        mSearchList.clear(); //先清空数据源
+        for (int i = 0; i <searchEntity.getData().getList().size() ; i++) {
+            mSearchList.add(searchEntity.getData().getList().get(i).getName());
+        }
+        mAdapter.notifyDataSetChanged();
+        mPop.showAsDropDown(editText, 0, 0); //显示搜索联想列表的pop
         searchLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -209,19 +220,6 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
                         .navigation();
             }
         });
-    }
-
-
-    @Override
-    public void getdata(SearchEntity searchEntity) {
-        mysearchEntity=searchEntity;
-        List<String> mylist=new ArrayList<>();
-        for (int i = 0; i <searchEntity.getData().getList().size() ; i++) {
-            mylist.add(searchEntity.getData().getList().get(i).getName());
-        }
-        mSearchList.addAll(mylist);
-        mAdapter.notifyDataSetChanged();
-        mPop.showAsDropDown(editText, 0, 0); //显示搜索联想列表的pop
     }
 
 

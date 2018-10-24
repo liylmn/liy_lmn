@@ -9,6 +9,7 @@ import com.lmn.view.resources.adapter.ResourcesAdapter;
  */
 public class ResourcesMultiItemEntity0 extends AbstractExpandableItem<ResourcesMultiItemEntity1> implements MultiItemEntity {
     public String title;
+    public String imgurl;
 
     @Override
     public int getItemType() {
@@ -26,5 +27,13 @@ public class ResourcesMultiItemEntity0 extends AbstractExpandableItem<ResourcesM
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
 }

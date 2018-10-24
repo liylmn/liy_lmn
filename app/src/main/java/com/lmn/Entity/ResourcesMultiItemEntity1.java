@@ -12,6 +12,7 @@ public class ResourcesMultiItemEntity1 extends AbstractExpandableItem implements
     public String downloadfilename;
     public String baseurl;
     public String url;
+    public String imgurl;
 
     public String getDownloadfilename() {
         return downloadfilename;
@@ -53,5 +54,13 @@ public class ResourcesMultiItemEntity1 extends AbstractExpandableItem implements
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
     }
 }

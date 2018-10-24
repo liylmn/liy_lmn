@@ -107,6 +107,10 @@ public class MainHomeFragment extends BaseFragment implements HomeContract.View{
 
     @Override
     public void setHomeData(HomeFragmentEntity find) {
+        List<HomeFragmentEntity.DataBean.ListBean> listBeans= find.getData().getList();
+        for (int i = 0; i <listBeans.size(); i++) {
+            listBeans.get(i).setImg(find.getData().getBasePath()+find.getData().getList().get(i).getImg());
+        }
      mainhomeAdapter.setNewData(find.getData().getList());
     }
 

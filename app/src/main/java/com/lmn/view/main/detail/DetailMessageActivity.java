@@ -78,17 +78,23 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
 
     @Override
     public void getdata(DetailMessageEntity detailMessageEntity) {
-        mydetailMessageEntity=detailMessageEntity;
-        int size = detailMessageEntity.getData().getFault().getReasons().size();
-        StringBuffer stringBuffer = new StringBuffer();
-        for (int i = 0; i < size; i++) {
-            stringBuffer.append((i + 1) + "." + detailMessageEntity.getData().getFault().getReasons().get(i));
-            if (i != size - 1) {
-                stringBuffer.append("\n");
+
+        try {
+            mydetailMessageEntity=detailMessageEntity;
+            int size = detailMessageEntity.getData().getFault().getReasons().size();
+            StringBuffer stringBuffer = new StringBuffer();
+            for (int i = 0; i < size; i++) {
+                stringBuffer.append((i + 1) + "." + detailMessageEntity.getData().getFault().getReasons().get(i));
+                if (i != size - 1) {
+                    stringBuffer.append("\n");
+                }
             }
+            tvReson.setText(stringBuffer.toString());
+            ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        tvReson.setText(stringBuffer.toString());
-        ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
+
     }
 
     @Override

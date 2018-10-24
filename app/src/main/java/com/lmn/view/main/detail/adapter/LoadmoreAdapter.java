@@ -34,6 +34,6 @@ public class LoadmoreAdapter extends BaseQuickAdapter<String,BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img),item,new ILoader.Options(R.mipmap.ic_launcher,R.drawable.loading_img));
+    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img),item,new ILoader.Options(R.drawable.loading_img,R.drawable.loading_img));
     }
 }

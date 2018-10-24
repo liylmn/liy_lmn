@@ -2,6 +2,7 @@ package com.lmn.view.main.adapter;
 
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -10,6 +11,9 @@ import com.lmn.Entity.HomeFragmentEntity;
 import com.lmn.R;
 
 import java.util.List;
+
+import lmn.com.lmnlibrary.imageloader.ILoader;
+import lmn.com.lmnlibrary.imageloader.ImageFactory;
 
 
 /**
@@ -44,6 +48,7 @@ public class MainhomeAdapter extends BaseQuickAdapter<HomeFragmentEntity.DataBea
                      .navigation();
          }
      });
+        ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img_left),item.getImg(),new ILoader.Options(R.drawable.loading_img,R.drawable.loading_img));
     }
 
 }
