@@ -192,7 +192,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     private void initPop() {
         mPop = new CustomPopupWindow.Builder(this)
                 .setContentView(R.layout.pop_search)
-                .setwidth(LinearLayout.LayoutParams.MATCH_PARENT)
+                .setwidth(LinearLayout.LayoutParams.WRAP_CONTENT)
                 .setheight(LinearLayout.LayoutParams.WRAP_CONTENT)
                 .setBackgroundAlpha(1f)
                 .build();

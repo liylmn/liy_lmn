@@ -26,8 +26,8 @@
             >
             <ImageView
                 android:id="@+id/img"
-                android:layout_width="500px"
-                android:layout_height="500px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 />
         </com.zhy.autolayout.AutoLinearLayout>
     </com.zhy.autolayout.AutoRelativeLayout>

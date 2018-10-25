@@ -99,8 +99,8 @@ public class CustomPopupWindow implements PopupWindow.OnDismissListener {
         }
         return this;
     }
-    
-    
+
+
     public boolean isShowing(){
         if (mPopupWindow.isShowing()){
             return true;

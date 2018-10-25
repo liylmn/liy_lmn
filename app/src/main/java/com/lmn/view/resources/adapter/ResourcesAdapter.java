@@ -1,11 +1,14 @@
 package com.lmn.view.resources.adapter;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.lmn.BuildConfig;
 import com.lmn.Entity.ResourcesMultiItemEntity0;
 import com.lmn.Entity.ResourcesMultiItemEntity1;
 import com.lmn.MainDataManager;
@@ -51,7 +55,11 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
     private static final String TAG = "ResourcesAdapter";
     private File firstFile;
     private File dir;
-
+    ComponentName[] excluded = new ComponentName[]{
+            new ComponentName("nutstore.android", "nutstore.android.SendToNutstoreIndex"),
+            new ComponentName("nutstore.android.debug", "nutstore.android.SendToNutstoreIndex"),
+    };
+    private static final int REQUEST_CODE_OPEN_FILE = 10;
     public ResourcesAdapter(Context context, List<MultiItemEntity> data) {
         super(data);
         addItemType(TYPE_LEVEL_0, R.layout.item_expandable_lv0);
@@ -79,18 +87,22 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                         }
                     }
                 });
-                ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.loading_img));
+                if (item0.getImgurl() == null || item0.getImgurl().equals("")) {
+                    helper.getView(R.id.iv_head).setVisibility(View.GONE);
+                } else {
+                    helper.getView(R.id.iv_head).setVisibility(View.VISIBLE);
+                    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.loading_img));
+                }
                 break;
             case TYPE_LEVEL_1:
                 final ResourcesMultiItemEntity1 item1 = (ResourcesMultiItemEntity1) item;
                 helper.setText(R.id.title, item1.title);
-//                ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img_head),((ResourcesMultiItemEntity1) item).getImgurl(),new ILoader.Options(R.mipmap.ic_launcher,R.mipmap.head_img_1));
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        final String fileUrl=Environment.getExternalStorageDirectory().getAbsolutePath() + "/zhongchetaiyuan/"+item1.getDownloadfilename();
-                        final File file=new File(fileUrl);
-                        if (file.exists()){
+                        final String fileUrl = Environment.getExternalStorageDirectory().getAbsolutePath() + "/zhongchetaiyuan/" + item1.getDownloadfilename();
+                        final File file = new File(fileUrl);
+                        if (file.exists()) {
                             MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                                     .title("打开文件")
                                     .content(((ResourcesMultiItemEntity1) item).getDownloadfilename())
@@ -100,33 +112,19 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                         @Override
                                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                             try {
-//                                                Intent intent2 = new Intent("android.intent.action.VIEW");
-//                                                intent2.addCategory("android.intent.category.DEFAULT");
-//                                                intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                                Uri uri = Uri.fromFile(file);
-//                                                //application/msword
-//                                                //application/vnd.ms-excel
-//                                                if (fileUrl.contains(".docx")){
-//                                                    intent2.setDataAndType(uri, "application/msword");
-//                                                }else if (fileUrl.contains(".xlsx")){
-//                                                    intent2.setDataAndType(uri, "application/vnd.ms-excel");
-//                                                }else {
-//                                                    intent2.setDataAndType(uri, "text/plain");
-//                                                }
-//                                                mContext.startActivity(intent2);
-                                                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                                                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                intent.setDataAndType(Uri.fromFile(file), "file/*");
-                                               mContext.startActivity(intent);
+                                                if (null == file || !file.exists()) {
+                                                    return;
+                                                }
+                                              context.startActivity(getImageFileIntent(context,fileUrl));
+
                                             } catch (Exception e) {
                                                 //没有安装第三方的软件会提示
                                                 Toast toast = Toast.makeText(mContext, "没有找到打开该文件的应用程序", Toast.LENGTH_SHORT);
                                                 toast.show();
                                             }
-                                            }
+                                        }
                                     }).show();
-                        }else {
+                        } else {
                             MaterialDialog materialDialog = new MaterialDialog.Builder(context)
                                     .title("下载附件")
                                     .content(((ResourcesMultiItemEntity1) item).getDownloadfilename())
@@ -185,8 +183,14 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                                         }
 
                                                         @Override
-                                                        public void onFailure(String erroInfo) {
-
+                                                        public void onFailure(final String erroInfo) {
+                                                            Activity activity = (Activity) context;
+                                                            activity.runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    Log.e("下载错误", erroInfo);
+                                                                }
+                                                            });
                                                         }
                                                     }
                                             );
@@ -213,5 +217,21 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
             dir.mkdirs();
         }
         return dir;
+    }
+
+    //android获取一个用于打开图片文件的intent
+    public static Intent getImageFileIntent(Context context, String param) {
+        Intent intent = new Intent("android.intent.action.VIEW");
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//判断是否为Android N版本
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", new File(param));
+        } else {
+             uri = Uri.fromFile(new File(param));
+        }
+        intent.setDataAndType(uri, "*/*");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
     }
 }

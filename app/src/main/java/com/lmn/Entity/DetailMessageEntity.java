@@ -20,7 +20,6 @@ public class DetailMessageEntity {
     private int code;
     private DataBean data;
     private String msg;
-
     public int getCode() {
         return code;
     }
@@ -53,7 +52,6 @@ public class DetailMessageEntity {
 
         private String basePath;
         private FaultBean fault;
-
         public String getBasePath() {
             return basePath;
         }
@@ -106,6 +104,15 @@ public class DetailMessageEntity {
             private String reasonName;
             private List<FaultImgsBean> faultImgs;
             private List<String> reasons;
+            private String imgSize;
+
+            public String getImgSize() {
+                return imgSize;
+            }
+
+            public void setImgSize(String imgSize) {
+                this.imgSize = imgSize;
+            }
 
             public Object getUrl() {
                 return url;

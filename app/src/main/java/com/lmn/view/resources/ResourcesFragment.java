@@ -127,7 +127,7 @@ public class ResourcesFragment extends BaseFragment implements ResourcesFragment
         List<ResouceEntity.DataBean.PageBean.ListBean> listBeans = resouceEntity.getData().getPage().getList();
         for (int i = 0; i < listBeans.size(); i++) {
             ResourcesMultiItemEntity0 resourcesMultiItemEntity0 = new ResourcesMultiItemEntity0();
-            resourcesMultiItemEntity0.title = (String) listBeans.get(i).getName();
+            resourcesMultiItemEntity0.title = (String) listBeans.get(i).getCreateDate();
             resourcesMultiItemEntity0.imgurl = (String) listBeans.get(i).getUrl();
 
             for (int j = 0; j < listBeans.get(i).getFaultResources().size(); j++) {

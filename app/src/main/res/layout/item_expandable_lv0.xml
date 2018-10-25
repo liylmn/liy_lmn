@@ -23,6 +23,7 @@
         android:textStyle="bold"
         android:textColor="@android:color/black"
         android:layout_weight="1"
+        android:layout_marginLeft="20dp"
         />
     <TextView
         android:id="@+id/sub_title"

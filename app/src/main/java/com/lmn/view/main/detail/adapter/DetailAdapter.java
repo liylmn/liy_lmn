@@ -46,7 +46,12 @@ public class DetailAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Ba
                 final DetailMultiItemEntity0 item0 = (DetailMultiItemEntity0) item;
                 helper.setText(R.id.title, item0.title)
                         .setImageResource(R.id.iv, item0.isExpanded() ? R.mipmap.arrow_b : R.mipmap.arrow_r);
-                ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head),item0.getImgurl(),new ILoader.Options(R.drawable.loading_img,R.mipmap.head_img));
+                if(item0.getImgurl()==null||item0.getImgurl().equals("")){
+                    helper.getView(R.id.iv_head).setVisibility(View.GONE);
+                }else {
+                    helper.getView(R.id.iv_head).setVisibility(View.VISIBLE);
+                    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.loading_img));
+                }
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

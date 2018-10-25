@@ -40,7 +40,10 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
     ImageView imgDetailmessage;
     @BindView(R.id.tv_loadmore)
     TextView tvLoadmore;
+    @BindView(R.id.tv_imggone)
+    TextView tvImggone;
     private DetailMessageEntity mydetailMessageEntity;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_detail_message;
@@ -80,7 +83,7 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
     public void getdata(DetailMessageEntity detailMessageEntity) {
 
         try {
-            mydetailMessageEntity=detailMessageEntity;
+            mydetailMessageEntity = detailMessageEntity;
             int size = detailMessageEntity.getData().getFault().getReasons().size();
             StringBuffer stringBuffer = new StringBuffer();
             for (int i = 0; i < size; i++) {
@@ -90,6 +93,13 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
                 }
             }
             tvReson.setText(stringBuffer.toString());
+            if (mydetailMessageEntity.getData().getFault().getImgSize().equals("0")) {
+                tvLoadmore.setVisibility(View.GONE);
+                imgDetailmessage.setVisibility(View.GONE);
+                tvImggone.setVisibility(View.VISIBLE);
+            } else if (mydetailMessageEntity.getData().getFault().getImgSize().equals("1")) {
+                tvLoadmore.setVisibility(View.GONE);
+            }
             ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,12 +122,12 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
         switch (view.getId()) {
             case R.id.home_title_bar_layout:
                 ARouter.getInstance().build("/search/activity")
-                        .withString("resultType","1")
+                        .withString("resultType", "1")
                         .navigation();
                 break;
             case R.id.tv_loadmore:
                 ARouter.getInstance().build("/loadmore/activity")
-                        .withObject("detailMessageEntity",mydetailMessageEntity)
+                        .withObject("detailMessageEntity", mydetailMessageEntity)
                         .navigation();
                 break;
         }
