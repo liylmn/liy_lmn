@@ -8,7 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    app:left_btn_visible="false"
+    app:left_btn_visible="true"
     app:title_text="更多详情"
     app:title_visible="true">
     <com.scwang.smartrefresh.layout.SmartRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -2,22 +2,20 @@ package com.lmn.view.search;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.lmn.Entity.SearchEntity;
 import com.lmn.MainDataManager;
 import com.lmn.R;
+import com.lmn.view.search.adapter.SearchAdapter;
+import com.lmn.view.search.entity.SearchAdapterEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,42 +41,41 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     private static final String TAG = "MainActivity";
     private EditText editText;
-    private CustomPopupWindow mPop; //显示搜索联想的pop
-    private ListView searchLv; //搜索联想结果的列表
-    private ArrayAdapter mAdapter; //ListView的适配器
-    private List<String> mSearchList = new ArrayList<>(); //搜索结果的数据源
+    private RecyclerView recyclerView;
     private PublishSubject<String> mPublishSubject;
     private CompositeDisposable mCompositeDisposable;
     @Inject
-     SearchPresenter searchPresenter;
+    SearchPresenter searchPresenter;
     @Autowired(name = "resultType")
     String resultType;
-    private SearchEntity mysearchEntity;
-
+    SearchAdapter searchAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         DaggerSearchComponent
                 .builder()
-                .appComponent( GlobalAppComponent.getAppComponent())
-                .searchPresenterModule(new SearchPresenterModule(MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()),this))
+                .appComponent(GlobalAppComponent.getAppComponent())
+                .searchPresenterModule(new SearchPresenterModule(MainDataManager.getInstance(GlobalAppComponent.getAppComponent().getDataManager()), this))
                 .build()
                 .inject(this);
         initEdt();
-        initPop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mCompositeDisposable.clear();
-        mPop.dismiss();
         searchPresenter.destory();
     }
 
     private void initEdt() {
-        editText = (EditText) findViewById(R.id.edt);
+        editText = findViewById(R.id.edt);
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        searchAdapter=new SearchAdapter(R.layout.item_tv);
+        recyclerView.setAdapter(searchAdapter);
+
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -93,7 +90,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.toString().trim().isEmpty()) {
-                    mPop.dismiss();
+                    searchAdapter.setNewData(null);
                 } else {
                     //输入内容非空的时候才开始搜索
                     startSearch(s.toString());
@@ -183,43 +180,23 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
      * 显示搜索结果
      */
     private void showSearchResult(String keyWords) {
-        searchPresenter.searchdate(keyWords,resultType);
-    }
-
-    /**
-     * 初始化Pop，pop的布局是一个列表
-     */
-    private void initPop() {
-        mPop = new CustomPopupWindow.Builder(this)
-                .setContentView(R.layout.pop_search)
-                .setwidth(LinearLayout.LayoutParams.WRAP_CONTENT)
-                .setheight(LinearLayout.LayoutParams.WRAP_CONTENT)
-                .setBackgroundAlpha(1f)
-                .build();
-        searchLv = (ListView) mPop.getItemView(R.id.search_list_lv);
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mSearchList);
-        searchLv.setAdapter(mAdapter);
+        searchPresenter.searchdate(keyWords, resultType);
     }
 
 
     @Override
     public void getdata(SearchEntity searchEntity) {
-        mysearchEntity=searchEntity;
-        mSearchList.clear(); //先清空数据源
+        List<SearchAdapterEntity> searchAdapterEntities = new ArrayList<>();
         for (int i = 0; i <searchEntity.getData().getList().size() ; i++) {
-            mSearchList.add(searchEntity.getData().getList().get(i).getName());
+            SearchAdapterEntity searchAdapterEntity=new SearchAdapterEntity();
+            searchAdapterEntity.setImgurl((String) searchEntity.getData().getList().get(i).getUrl());
+            searchAdapterEntity.setBaseurl( searchEntity.getData().getBasePath());
+            searchAdapterEntity.setId(searchEntity.getData().getList().get(i).getId()+"");
+            searchAdapterEntity.setResulttype(searchEntity.getData().getList().get(i).getResultType()+"");
+            searchAdapterEntity.setName(searchEntity.getData().getList().get(i).getName());
+            searchAdapterEntities.add(searchAdapterEntity);
         }
-        mAdapter.notifyDataSetChanged();
-        mPop.showAsDropDown(editText, 0, 0); //显示搜索联想列表的pop
-        searchLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ARouter.getInstance().build("/detailmessage/activity")
-                        .withString("message",  mysearchEntity.getData().getList().get(position).getName())
-                        .withString("id", mysearchEntity.getData().getList().get(position).getId()+"")
-                        .navigation();
-            }
-        });
+        searchAdapter.setNewData(searchAdapterEntities);
     }
 
 

@@ -67,7 +67,8 @@
         <activity
             android:name=".view.search.SearchActivity"
             android:screenOrientation="portrait"
-           />
+            android:windowSoftInputMode="adjustUnspecified"
+            />
         <activity
             android:name=".view.main.detail.DetailActivity"
             android:screenOrientation="portrait" />

@@ -112,7 +112,7 @@ public class MainDataManager extends BaseDataManager {
     }
 
     /*
-     *故障搜索接口
+     *故障资源下载接口
      */
     public Disposable download(String url, final String filename, DisposableObserver<ResponseBody> consumer, final DownloadFileListener downloadFileListener) {
         return getService(ApiService.class).download(url)

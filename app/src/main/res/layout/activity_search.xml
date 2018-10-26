@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.lmn.widget.CustomTitleBar
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lmn.view.search.SearchActivity">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    app:left_btn_visible="true"
+    app:title_text="搜索"
+    app:title_visible="true"
+    android:background="@color/gray_bg">
 
     <EditText
         android:id="@+id/edt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"/>
-</android.support.constraint.ConstraintLayout>
+        android:layout_margin="15dp"
+        android:textSize="15sp"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray_bg">
+    </android.support.v7.widget.RecyclerView>
+</com.lmn.widget.CustomTitleBar>

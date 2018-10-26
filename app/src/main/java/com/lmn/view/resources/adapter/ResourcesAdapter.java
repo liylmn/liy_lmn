@@ -3,12 +3,8 @@ package com.lmn.view.resources.adapter;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,11 +15,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.lmn.BuildConfig;
 import com.lmn.Entity.ResourcesMultiItemEntity0;
 import com.lmn.Entity.ResourcesMultiItemEntity1;
 import com.lmn.MainDataManager;
 import com.lmn.R;
+import com.lmn.utils.FileUtil;
 
 import java.io.File;
 import java.util.List;
@@ -115,7 +111,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                                 if (null == file || !file.exists()) {
                                                     return;
                                                 }
-                                              context.startActivity(getImageFileIntent(context,fileUrl));
+                                              context.startActivity(FileUtil.getImageFileIntent(context,fileUrl));
 
                                             } catch (Exception e) {
                                                 //没有安装第三方的软件会提示
@@ -219,19 +215,5 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
         return dir;
     }
 
-    //android获取一个用于打开图片文件的intent
-    public static Intent getImageFileIntent(Context context, String param) {
-        Intent intent = new Intent("android.intent.action.VIEW");
-        Uri uri;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//判断是否为Android N版本
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".fileProvider", new File(param));
-        } else {
-             uri = Uri.fromFile(new File(param));
-        }
-        intent.setDataAndType(uri, "*/*");
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        return intent;
-    }
+
 }

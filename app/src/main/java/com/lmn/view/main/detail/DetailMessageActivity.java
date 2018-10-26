@@ -93,12 +93,18 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
                 }
             }
             tvReson.setText(stringBuffer.toString());
-            if (mydetailMessageEntity.getData().getFault().getImgSize().equals("0")) {
+            if (mydetailMessageEntity.getData().getFault().getImgSize()==null||mydetailMessageEntity.getData().getFault().getImgSize().equals("")||mydetailMessageEntity.getData().getFault().getImgSize().equals("0")) {
                 tvLoadmore.setVisibility(View.GONE);
                 imgDetailmessage.setVisibility(View.GONE);
                 tvImggone.setVisibility(View.VISIBLE);
             } else if (mydetailMessageEntity.getData().getFault().getImgSize().equals("1")) {
                 tvLoadmore.setVisibility(View.GONE);
+                imgDetailmessage.setVisibility(View.VISIBLE);
+                tvImggone.setVisibility(View.GONE);
+            }else {
+                imgDetailmessage.setVisibility(View.VISIBLE);
+                tvImggone.setVisibility(View.GONE);
+                tvLoadmore.setVisibility(View.VISIBLE);
             }
             ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
         } catch (Exception e) {
