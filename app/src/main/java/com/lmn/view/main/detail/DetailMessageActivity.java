@@ -105,6 +105,7 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
                 imgDetailmessage.setVisibility(View.VISIBLE);
                 tvImggone.setVisibility(View.GONE);
                 tvLoadmore.setVisibility(View.VISIBLE);
+                tvLoadmore.setText("查看更多("+mydetailMessageEntity.getData().getFault().getImgSize()+")");
             }
             ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
         } catch (Exception e) {

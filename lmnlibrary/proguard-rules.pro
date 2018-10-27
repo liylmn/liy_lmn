@@ -205,6 +205,7 @@
 # Glide图片库
 -keep class com.bumptech.glide.**{*;}
 
+
 ##Arouter库
 #-keep public class com.alibaba.android.arouter.routes.**{*;}
 #-keep class * implements com.alibaba.android.arouter.facade.template.ISyringe{*;}

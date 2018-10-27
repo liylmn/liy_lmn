@@ -5,6 +5,7 @@ import android.os.Environment;
 import com.lmn.Entity.DetailEntity;
 import com.lmn.Entity.DetailMessageEntity;
 import com.lmn.Entity.HomeFragmentEntity;
+import com.lmn.Entity.ImgsEntity;
 import com.lmn.Entity.LeaveMessageEntity;
 import com.lmn.Entity.LoginEntity;
 import com.lmn.Entity.ModifyEntity;
@@ -71,6 +72,14 @@ public class MainDataManager extends BaseDataManager {
      */
     public Disposable getdetailmessage(String id, DisposableObserver<DetailMessageEntity> consumer) {
         return getService(ApiService.class).getdetailmessage(id).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(consumer);
+    }
+    /*
+     *更多图片接口
+     */
+    public Disposable getimgs(String id,String pageNum,String pageSize, DisposableObserver<ImgsEntity> consumer) {
+        return getService(ApiService.class).getimgs(pageNum,pageSize,id).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(consumer);
     }

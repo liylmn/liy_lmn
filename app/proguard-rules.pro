@@ -202,7 +202,7 @@
 #}
 #
 ## Glide图片库
-#-keep class com.bumptech.glide.**{*;}
+-keep class com.bumptech.glide.**{*;}
 
 #Arouter库
 -keep public class com.alibaba.android.arouter.routes.**{*;}

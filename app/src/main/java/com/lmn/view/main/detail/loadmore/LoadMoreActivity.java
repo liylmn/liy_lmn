@@ -8,6 +8,8 @@ import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.lmn.Entity.DetailMessageEntity;
+import com.lmn.Entity.ImgsEntity;
+import com.lmn.MainDataManager;
 import com.lmn.R;
 import com.lmn.view.main.detail.adapter.LoadmoreAdapter;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -19,11 +21,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import lmn.com.lmnlibrary.base.BaseActivity;
 @Route(path = "/loadmore/activity")
-public class LoadMoreActivity extends BaseActivity {
+public class LoadMoreActivity extends BaseActivity implements LoadMoreContract.View{
 
 
     @BindView(R.id.recyclerView)
@@ -34,6 +38,9 @@ public class LoadMoreActivity extends BaseActivity {
     LoadmoreAdapter loadmoreAdapter;
     @Autowired
     DetailMessageEntity  detailMessageEntity;
+    @Inject
+    LoadMorePresenter loadMorePresenter;
+    private int page = 1;
     @Override
     public int getLayoutId() {
         return R.layout.activity_load_more;
@@ -41,21 +48,27 @@ public class LoadMoreActivity extends BaseActivity {
 
     @Override
     public void initview() {
+        DaggerLoadMoreComponent
+                .builder()
+                .appComponent(getAppComponent())
+                .loadMorPresenterModule(new LoadMorPresenterModule(MainDataManager.getInstance(mDataManager),this))
+                .build()
+                .inject(this);
         ARouter.getInstance().inject(this);
         teststrs=new ArrayList<String>();
-        for (int i = 0; i <detailMessageEntity.getData().getFault().getFaultImgs().size() ; i++) {
-            teststrs.add(detailMessageEntity.getData().getBasePath()+detailMessageEntity.getData().getFault().getFaultImgs().get(i).getImg());
-        }
+//        for (int i = 0; i <detailMessageEntity.getData().getFault().getFaultImgs().size() ; i++) {
+//            teststrs.add(detailMessageEntity.getData().getBasePath()+detailMessageEntity.getData().getFault().getFaultImgs().get(i).getImg());
+//        }
         //设置 Footer 为 球脉冲 样式
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
-        loadmoreAdapter=new LoadmoreAdapter(R.layout.item_img,teststrs);
+        loadmoreAdapter=new LoadmoreAdapter(R.layout.item_img);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(loadmoreAdapter);
     }
 
     @Override
     public void initData() {
-
+        loadMorePresenter.setdate(detailMessageEntity.getData().getFault().getId()+"","1","10");
     }
 
     @Override
@@ -64,12 +77,15 @@ public class LoadMoreActivity extends BaseActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                teststrs=new ArrayList<String>();
+                loadMorePresenter.setdate(detailMessageEntity.getData().getFault().getId()+"","1","10");
             }
         });
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(RefreshLayout refreshlayout) {
                 refreshlayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                loadMorePresenter.setdate(detailMessageEntity.getData().getFault().getId()+"",page+"","10");
             }
         });
     }
@@ -81,4 +97,26 @@ public class LoadMoreActivity extends BaseActivity {
         unbinder=ButterKnife.bind(this);
     }
 
+    @Override
+    public void getdata(ImgsEntity imgsEntity) {
+        for (int i = 0; i < imgsEntity.getData().getPage().getList().size(); i++) {
+            teststrs.add(imgsEntity.getData().getBasePath()+imgsEntity.getData().getPage().getList().get(i).getImg());
+        }
+        loadmoreAdapter.setNewData(teststrs);
+        if (page != imgsEntity.getData().getPage().getPages()) {
+            page++;
+        } else {
+            refreshLayout.finishLoadMoreWithNoMoreData();
+        }
+    }
+
+    @Override
+    public void showProgressDialogView() {
+    showProgressDialog("加载中");
+    }
+
+    @Override
+    public void hiddenProgressDialogView() {
+    hiddenProgressDialog();
+    }
 }

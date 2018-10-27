@@ -21,6 +21,7 @@ package com.lmn.http;
 import com.lmn.Entity.DetailEntity;
 import com.lmn.Entity.DetailMessageEntity;
 import com.lmn.Entity.HomeFragmentEntity;
+import com.lmn.Entity.ImgsEntity;
 import com.lmn.Entity.LeaveMessageEntity;
 import com.lmn.Entity.LoginEntity;
 import com.lmn.Entity.ModifyEntity;
@@ -56,6 +57,10 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("api/fault/detail")
     Observable<DetailMessageEntity> getdetailmessage(@Field("id")String id);
+
+    @FormUrlEncoded
+    @POST("api/fault/imgs")
+    Observable<ImgsEntity> getimgs(@Field("pageNum")String pageNum, @Field("pageSize")String pageSize, @Field("id")String id);
 
     @FormUrlEncoded
     @POST("api/fault/resource")

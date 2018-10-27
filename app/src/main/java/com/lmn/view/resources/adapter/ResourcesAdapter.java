@@ -100,7 +100,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                         final File file = new File(fileUrl);
                         if (file.exists()) {
                             MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                                    .title("打开文件")
+                                    .title(item1.getTitle())
                                     .content(((ResourcesMultiItemEntity1) item).getDownloadfilename())
                                     .positiveText("打开")
                                     .negativeText("取消")
@@ -122,7 +122,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                     }).show();
                         } else {
                             MaterialDialog materialDialog = new MaterialDialog.Builder(context)
-                                    .title("下载附件")
+                                    .title(item1.getTitle())
                                     .content(((ResourcesMultiItemEntity1) item).getDownloadfilename())
                                     .positiveText("下载")
                                     .negativeText("取消")
