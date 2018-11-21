@@ -164,7 +164,8 @@ public class MainActivity extends BaseActivity implements BottomNavigationBar.On
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
+                android.os.Process.killProcess(android.os.Process.myPid());
+
             }
             return true;
         }

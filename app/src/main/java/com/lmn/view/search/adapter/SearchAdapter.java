@@ -135,6 +135,10 @@ public class SearchAdapter extends BaseQuickAdapter<SearchAdapterEntity,BaseView
                                                     activity.runOnUiThread(new Runnable() {
                                                         @Override
                                                         public void run() {
+                                                            if (null == file || !file.exists()) {
+                                                                return;
+                                                            }
+                                                            mContext.startActivity(FileUtil.getImageFileIntent(mContext,fileUrl));
                                                             Toast.makeText(mContext, "下载完成，保存路径" + localPath, Toast.LENGTH_SHORT).show();
                                                         }
                                                     });

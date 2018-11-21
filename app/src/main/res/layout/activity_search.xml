@@ -12,17 +12,37 @@
     app:title_text="搜索"
     app:title_visible="true"
     android:background="@color/gray_bg">
+    <com.zhy.autolayout.AutoRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
 
     <EditText
         android:id="@+id/edt"
-        android:layout_width="match_parent"
+        android:layout_width="450px"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"/>
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@drawable/bg_btn_login_selected"
+            android:text="搜索"
+            android:textColor="@color/color_ffffff"
+            android:textSize="18dp"
+            android:layout_margin="15dp"
+            android:layout_toRightOf="@+id/edt"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray_bg">
+        android:layout_height="match_parent"
+        android:background="@color/gray_bg"
+        android:layout_below="@+id/edt">
     </android.support.v7.widget.RecyclerView>
+    </com.zhy.autolayout.AutoRelativeLayout>
 </com.lmn.widget.CustomTitleBar>

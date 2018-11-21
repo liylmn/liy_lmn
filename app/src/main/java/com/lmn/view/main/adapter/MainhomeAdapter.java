@@ -48,7 +48,7 @@ public class MainhomeAdapter extends BaseQuickAdapter<HomeFragmentEntity.DataBea
                      .navigation();
          }
      });
-        ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img_left),item.getImg(),new ILoader.Options(R.drawable.loading_img,R.drawable.loading_img));
+        ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.img_left),item.getImg(),new ILoader.Options(R.drawable.loading_img,R.drawable.error_img));
     }
 
 }

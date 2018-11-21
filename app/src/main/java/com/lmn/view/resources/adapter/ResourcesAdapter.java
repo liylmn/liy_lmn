@@ -56,6 +56,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
             new ComponentName("nutstore.android.debug", "nutstore.android.SendToNutstoreIndex"),
     };
     private static final int REQUEST_CODE_OPEN_FILE = 10;
+
     public ResourcesAdapter(Context context, List<MultiItemEntity> data) {
         super(data);
         addItemType(TYPE_LEVEL_0, R.layout.item_expandable_lv0);
@@ -87,7 +88,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                     helper.getView(R.id.iv_head).setVisibility(View.GONE);
                 } else {
                     helper.getView(R.id.iv_head).setVisibility(View.VISIBLE);
-                    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.loading_img));
+                    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.error_img));
                 }
                 break;
             case TYPE_LEVEL_1:
@@ -111,7 +112,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                                 if (null == file || !file.exists()) {
                                                     return;
                                                 }
-                                              context.startActivity(FileUtil.getImageFileIntent(context,fileUrl));
+                                                context.startActivity(FileUtil.getImageFileIntent(context, fileUrl));
 
                                             } catch (Exception e) {
                                                 //没有安装第三方的软件会提示
@@ -173,6 +174,10 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                                             activity.runOnUiThread(new Runnable() {
                                                                 @Override
                                                                 public void run() {
+                                                                    if (null == file || !file.exists()) {
+                                                                        return;
+                                                                    }
+                                                                    context.startActivity(FileUtil.getImageFileIntent(context, fileUrl));
                                                                     Toast.makeText(context, "下载完成，保存路径" + localPath, Toast.LENGTH_SHORT).show();
                                                                 }
                                                             });

@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Autowired;
 import com.alibaba.android.arouter.facade.annotation.Route;
@@ -41,6 +44,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     private static final String TAG = "MainActivity";
     private EditText editText;
+    private Button btn_search;
     private RecyclerView recyclerView;
     private PublishSubject<String> mPublishSubject;
     private CompositeDisposable mCompositeDisposable;
@@ -49,6 +53,7 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     @Autowired(name = "resultType")
     String resultType;
     SearchAdapter searchAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,32 +76,50 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
 
     private void initEdt() {
         editText = findViewById(R.id.edt);
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        searchAdapter=new SearchAdapter(R.layout.item_tv);
-        recyclerView.setAdapter(searchAdapter);
-
-        editText.addTextChangedListener(new TextWatcher() {
+        btn_search = findViewById(R.id.btn_search);
+        btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s.toString().trim().isEmpty()) {
-                    searchAdapter.setNewData(null);
-                } else {
-                    //输入内容非空的时候才开始搜索
-                    startSearch(s.toString());
-                }
+            public void onClick(View v) {
+                startSearch(editText.getText().toString());
             }
         });
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        searchAdapter = new SearchAdapter(R.layout.item_tv);
+        recyclerView.setAdapter(searchAdapter);
+
+//        editText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if (s.toString().trim().isEmpty()) {
+//                    searchAdapter.setNewData(null);
+//                } else {
+//                    //输入内容非空的时候才开始搜索
+//                    startSearch(s.toString());
+//                }
+//            }
+//        });
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {//搜索按键action
+                    startSearch(editText.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         mPublishSubject = PublishSubject.create();
         mPublishSubject.debounce(200, TimeUnit.MILLISECONDS) //这里我们限制只有在输入字符200毫秒后没有字符没有改变时才去请求网络，节省了资源
@@ -187,12 +210,12 @@ public class SearchActivity extends AppCompatActivity implements SearchContract.
     @Override
     public void getdata(SearchEntity searchEntity) {
         List<SearchAdapterEntity> searchAdapterEntities = new ArrayList<>();
-        for (int i = 0; i <searchEntity.getData().getList().size() ; i++) {
-            SearchAdapterEntity searchAdapterEntity=new SearchAdapterEntity();
+        for (int i = 0; i < searchEntity.getData().getList().size(); i++) {
+            SearchAdapterEntity searchAdapterEntity = new SearchAdapterEntity();
             searchAdapterEntity.setImgurl((String) searchEntity.getData().getList().get(i).getUrl());
-            searchAdapterEntity.setBaseurl( searchEntity.getData().getBasePath());
-            searchAdapterEntity.setId(searchEntity.getData().getList().get(i).getId()+"");
-            searchAdapterEntity.setResulttype(searchEntity.getData().getList().get(i).getResultType()+"");
+            searchAdapterEntity.setBaseurl(searchEntity.getData().getBasePath());
+            searchAdapterEntity.setId(searchEntity.getData().getList().get(i).getId() + "");
+            searchAdapterEntity.setResulttype(searchEntity.getData().getList().get(i).getResultType() + "");
             searchAdapterEntity.setName(searchEntity.getData().getList().get(i).getName());
             searchAdapterEntities.add(searchAdapterEntity);
         }

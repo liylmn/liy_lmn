@@ -19,12 +19,13 @@ import android.widget.PopupWindow;
 public class CustomPopupWindow implements PopupWindow.OnDismissListener {
     private PopupWindow mPopupWindow;
     private View contentView;
-    private static Activity mActivity;
+    private Activity mActivity;
     private float bgAlpha; //背景透明度
 
     public CustomPopupWindow(Builder builder) {
+        mActivity=builder.mActivity;
         bgAlpha = builder.backgroundAlpha;
-        contentView = LayoutInflater.from(mActivity).inflate(builder.contentViewId, null);
+        contentView = LayoutInflater.from(builder.mActivity).inflate(builder.contentViewId, null);
         mPopupWindow = new PopupWindow(contentView, builder.width, builder.height);
         //设置点击外部可以取消，必须和下面这个方法配合才有效
 //        mPopupWindow.setOutsideTouchable(false);
@@ -153,7 +154,7 @@ public class CustomPopupWindow implements PopupWindow.OnDismissListener {
         private int height;  //pop的高度
         private int animStyle; //动画效果
         private float backgroundAlpha = 0.5f; //背景的透明度，默认半透明
-
+        private Activity mActivity;
         public Builder(Activity activity) {
             mActivity = activity;
         }

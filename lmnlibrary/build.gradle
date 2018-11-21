@@ -15,6 +15,7 @@ android {
                 arguments = [ moduleName : project.getName() ]
             }
         }
+
     }
     buildTypes {
         release {
@@ -72,9 +73,7 @@ dependencies {
 
     compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14'
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14'//没有使用特殊Header，可以不加这行
-// 针对glide v3 版本：如果您的app中已经使用了glide，且glide版本号为3.x，仅需要依赖以下库：
-//    implementation 'com.github.SherlockGougou:BigImageViewPager:v3_1.2.8'
-//    implementation 'com.android.support:appcompat-v7:27.1.1'
+
 
 
 }

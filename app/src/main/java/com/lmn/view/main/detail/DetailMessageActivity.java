@@ -13,11 +13,16 @@ import com.lmn.Entity.DetailMessageEntity;
 import com.lmn.MainDataManager;
 import com.lmn.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cc.shinichi.library.ImagePreview;
+import cc.shinichi.library.bean.ImageInfo;
 import lmn.com.lmnlibrary.base.BaseActivity;
 import lmn.com.lmnlibrary.imageloader.ILoader;
 import lmn.com.lmnlibrary.imageloader.ImageFactory;
@@ -68,6 +73,7 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
 
     @Override
     public void setListener() {
+
     }
 
 
@@ -93,7 +99,7 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
                 }
             }
             tvReson.setText(stringBuffer.toString());
-            if (mydetailMessageEntity.getData().getFault().getImgSize()==null||mydetailMessageEntity.getData().getFault().getImgSize().equals("")||mydetailMessageEntity.getData().getFault().getImgSize().equals("0")) {
+            if (mydetailMessageEntity.getData().getFault().getImgSize() == null || mydetailMessageEntity.getData().getFault().getImgSize().equals("") || mydetailMessageEntity.getData().getFault().getImgSize().equals("0")) {
                 tvLoadmore.setVisibility(View.GONE);
                 imgDetailmessage.setVisibility(View.GONE);
                 tvImggone.setVisibility(View.VISIBLE);
@@ -101,17 +107,16 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
                 tvLoadmore.setVisibility(View.GONE);
                 imgDetailmessage.setVisibility(View.VISIBLE);
                 tvImggone.setVisibility(View.GONE);
-            }else {
+            } else {
                 imgDetailmessage.setVisibility(View.VISIBLE);
                 tvImggone.setVisibility(View.GONE);
                 tvLoadmore.setVisibility(View.VISIBLE);
-                tvLoadmore.setText("查看更多("+mydetailMessageEntity.getData().getFault().getImgSize()+")");
+                tvLoadmore.setText("查看更多(" + mydetailMessageEntity.getData().getFault().getImgSize() + ")");
             }
-            ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.mipmap.ic_launcher, R.drawable.loading_img));
+            ImageFactory.getLoader().loadNet(imgDetailmessage, detailMessageEntity.getData().getBasePath() + detailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg(), new ILoader.Options(R.drawable.loading_img, R.drawable.error_img));
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -144,5 +149,28 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
     protected void onDestroy() {
         super.onDestroy();
         detailMessagePresenter.destory();
+    }
+
+    @OnClick(R.id.img_detailmessage)
+    public void onViewClicked() {
+        List<ImageInfo> imageInfoList=new ArrayList<>();
+        ImageInfo imageInfo=new ImageInfo();
+        imageInfo.setOriginUrl(mydetailMessageEntity.getData().getBasePath()+mydetailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg());
+        imageInfo.setThumbnailUrl(mydetailMessageEntity.getData().getBasePath()+mydetailMessageEntity.getData().getFault().getFaultImgs().get(0).getImg());
+        imageInfoList.add(imageInfo);
+        ImagePreview
+                .getInstance()
+                .setContext(this)
+                .setIndex(0)
+                .setImageInfoList(imageInfoList)
+                .setShowDownButton(true)
+                .setLoadStrategy(ImagePreview.LoadStrategy.NetworkAuto)
+                .setFolderName("BigImageViewDownload")
+                .setScaleLevel(1, 3, 5)
+                .setZoomTransitionDuration(300)
+                .setShowCloseButton(true)
+                .setEnableDragClose(false)// 是否启用上拉/下拉关闭，默认不启用
+                .setEnableClickClose(true)// 是否启用点击图片关闭，默认启用
+                .start();
     }
 }
