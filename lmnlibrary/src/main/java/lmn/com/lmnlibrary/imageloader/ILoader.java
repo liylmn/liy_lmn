@@ -26,7 +26,7 @@ public interface ILoader {
      * @param url
      * @param options
      */
-    void loadNet(ImageView target, String url, Options options);
+    void loadNet(Context context,ImageView target, String url, Options options);
 
     void loadNet(Context context, String url, Options options, LoadCallback callback);
 

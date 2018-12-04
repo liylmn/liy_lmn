@@ -99,7 +99,7 @@ public class SearchAdapter extends BaseQuickAdapter<SearchAdapterEntity,BaseView
 
                                                 @Override
                                                 public void onError(Throwable e) {
-
+                                                    Toast.makeText(mContext,"下载失败，请联系管理员",Toast.LENGTH_SHORT).show();
                                                 }
 
                                                 @Override
@@ -139,7 +139,7 @@ public class SearchAdapter extends BaseQuickAdapter<SearchAdapterEntity,BaseView
                                                                 return;
                                                             }
                                                             mContext.startActivity(FileUtil.getImageFileIntent(mContext,fileUrl));
-                                                            Toast.makeText(mContext, "下载完成，保存路径" + localPath, Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(mContext, "下载完成，保存路径" + localPath, Toast.LENGTH_LONG).show();
                                                         }
                                                     });
                                                 }

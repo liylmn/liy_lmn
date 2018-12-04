@@ -50,7 +50,7 @@ public class DetailAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, Ba
                     helper.getView(R.id.iv_head).setVisibility(View.GONE);
                 }else {
                     helper.getView(R.id.iv_head).setVisibility(View.VISIBLE);
-                    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.error_img));
+                    ImageFactory.getLoader().loadNet(mContext.getApplicationContext(),(ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.error_img));
                 }
                 helper.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

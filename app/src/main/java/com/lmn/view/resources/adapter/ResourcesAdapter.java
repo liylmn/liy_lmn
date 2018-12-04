@@ -88,7 +88,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                     helper.getView(R.id.iv_head).setVisibility(View.GONE);
                 } else {
                     helper.getView(R.id.iv_head).setVisibility(View.VISIBLE);
-                    ImageFactory.getLoader().loadNet((ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.error_img));
+                    ImageFactory.getLoader().loadNet(mContext.getApplicationContext(),(ImageView) helper.getView(R.id.iv_head), item0.getImgurl(), new ILoader.Options(R.drawable.loading_img, R.drawable.error_img));
                 }
                 break;
             case TYPE_LEVEL_1:
@@ -138,7 +138,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
 
                                                         @Override
                                                         public void onError(Throwable e) {
-
+                                                            Toast.makeText(context,"下载失败，请联系管理员",Toast.LENGTH_SHORT).show();
                                                         }
 
                                                         @Override
@@ -178,7 +178,7 @@ public class ResourcesAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity,
                                                                         return;
                                                                     }
                                                                     context.startActivity(FileUtil.getImageFileIntent(context, fileUrl));
-                                                                    Toast.makeText(context, "下载完成，保存路径" + localPath, Toast.LENGTH_SHORT).show();
+                                                                    Toast.makeText(context, "下载完成，保存路径" + localPath, Toast.LENGTH_LONG).show();
                                                                 }
                                                             });
                                                         }

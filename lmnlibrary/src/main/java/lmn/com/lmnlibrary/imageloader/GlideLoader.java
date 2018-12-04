@@ -24,7 +24,6 @@ public class GlideLoader implements ILoader {
     public void init(Context context) {
         mContext = context;
     }
-
     /**
      * 网络加载
      *
@@ -33,9 +32,11 @@ public class GlideLoader implements ILoader {
      * @param options
      */
     @Override
-    public void loadNet(ImageView target, String url, Options options) {
-        load(getRequestManager(target.getContext()).load(url), target, options);
+    public void loadNet(Context context, ImageView target, String url, Options options) {
+        load(getRequestManager(context).load(url), target, options);
     }
+
+
 
 
     @Override
