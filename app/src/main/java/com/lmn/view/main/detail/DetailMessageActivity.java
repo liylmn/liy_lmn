@@ -98,7 +98,8 @@ public class DetailMessageActivity extends BaseActivity implements DetailMessage
                     stringBuffer.append("\n");
                 }
             }
-            tvReson.setText(stringBuffer.toString());
+//            tvReson.setText(stringBuffer.toString());
+            tvReson.setText(detailMessageEntity.getData().getFault().getReasonName());
             if (mydetailMessageEntity.getData().getFault().getImgSize() == null || mydetailMessageEntity.getData().getFault().getImgSize().equals("") || mydetailMessageEntity.getData().getFault().getImgSize().equals("0")) {
                 tvLoadmore.setVisibility(View.GONE);
                 imgDetailmessage.setVisibility(View.GONE);
