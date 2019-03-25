@@ -69,6 +69,7 @@ public class ResourcesFragment extends BaseFragment implements ResourcesFragment
             .build()
             .inject(this);
         resourcesAdapter = new ResourcesAdapter(mActivity, list);
+        resourcesAdapter.expandAll();
         //设置 Footer 为 球脉冲 样式
         refreshLayout.setRefreshFooter(new BallPulseFooter(mContext).setSpinnerStyle(SpinnerStyle.Scale));
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -144,6 +145,7 @@ public class ResourcesFragment extends BaseFragment implements ResourcesFragment
             list.add(resourcesMultiItemEntity0);
         }
         resourcesAdapter.setNewData(list);
+        resourcesAdapter.expandAll();
         if (page != resouceEntity.getData().getPage().getPages()) {
             page++;
         } else {

@@ -9,7 +9,7 @@ import lmn.com.lmnlibrary.imageloader.ILoader;
 public class CommonConfig {
     public static int HTTP_READ_TIME_OUT = 15;
     public static int HTTP_CONNECT_TIME_OUT = 15;
-    public static String BASE_URL = "http://118.24.8.237:8080/";
+    public static String BASE_URL = "http://59.49.105.180:34558/";
     public static boolean DEBUG = true;
     public static String SHARE_PREFERENCE_FILE_NAME = "liylmn";
     public static boolean LOGIN = true;

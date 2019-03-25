@@ -60,6 +60,7 @@ public class HttpHelper {
                 .readTimeout(CommonConfig.HTTP_READ_TIME_OUT, TimeUnit.SECONDS)
                 .connectTimeout(CommonConfig.HTTP_CONNECT_TIME_OUT, TimeUnit.SECONDS)
                 .addInterceptor(new BaseInterceptor<>(null,context))
+                .addInterceptor(new NetWorkInterceptor())
                 .build();
         mRetrofitClient = createRetrofitClient(httpClient);
     }

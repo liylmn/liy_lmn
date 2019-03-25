@@ -7,13 +7,16 @@ import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import butterknife.Unbinder;
+import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import lmn.com.lmnlibrary.AppComponent;
@@ -23,30 +26,41 @@ import lmn.com.lmnlibrary.manager.DataManager;
 import lmn.com.lmnlibrary.receiver.NetWorkChangeBroadcastReceiver;
 import lmn.com.lmnlibrary.utils.DialogUtil;
 import lmn.com.lmnlibrary.utils.KnifeUtil;
+import lmn.com.lmnlibrary.utils.LoggerUtil;
 
 /**
  * Created by admin on 2017/3/12.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements UiCallback{
+public abstract class BaseActivity extends AppCompatActivity implements UiCallback {
     protected DataManager mDataManager;
     protected Context mContext;
     protected Dialog loadingDialog;
     protected Unbinder unbinder;
     private NetWorkChangeBroadcastReceiver receiver;
+    protected LoggerUtil loggerUtil;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mDataManager = getAppComponent().getDataManager();
         mContext = getAppComponent().getContext();
         registerNetChangeReceiver();
+        //去除title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //去掉Activity上面的状态栏
+        getWindow().setFlags(WindowManager.LayoutParams. FLAG_FULLSCREEN ,
+                WindowManager.LayoutParams. FLAG_FULLSCREEN);
         if (getLayoutId() > 0) {
             setContentView(getLayoutId());
             unbinder = KnifeUtil.bind(this);
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        loggerUtil=LoggerUtil.getLoggerUtil();
         initview();
         initData();
         setListener();
+        hideBottomUIMenu();
+
     }
     private void registerNetChangeReceiver() {
         receiver = new NetWorkChangeBroadcastReceiver(this);
@@ -110,7 +124,6 @@ public abstract class BaseActivity extends AppCompatActivity implements UiCallba
             disposables = new CompositeDisposable();
         }
         disposables.add(disposable);
-
     }
 
     /**
@@ -156,5 +169,14 @@ public abstract class BaseActivity extends AppCompatActivity implements UiCallba
     protected void onStop() {
         super.onStop();
         BusFactory.getBus().unregister(this);
+    }
+
+    /**
+     * 隐藏虚拟按键，并且全屏
+     */
+    protected void hideBottomUIMenu() {
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION|View.SYSTEM_UI_FLAG_IMMERSIVE;
+        getWindow().setAttributes(params);
     }
 }

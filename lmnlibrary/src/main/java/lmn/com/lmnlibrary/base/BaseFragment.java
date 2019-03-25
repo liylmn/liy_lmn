@@ -12,18 +12,21 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import butterknife.Unbinder;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import lmn.com.lmnlibrary.AppComponent;
 import lmn.com.lmnlibrary.GlobalAppComponent;
 import lmn.com.lmnlibrary.event.BusFactory;
 import lmn.com.lmnlibrary.manager.DataManager;
 import lmn.com.lmnlibrary.utils.DialogUtil;
 import lmn.com.lmnlibrary.utils.KnifeUtil;
+import lmn.com.lmnlibrary.utils.LoggerUtil;
 
 /**
  * Created by admin on 2017/3/15.
  */
 
-public class BaseFragment extends LazyFragment implements UiCallback {
+public abstract class BaseFragment extends LazyFragment implements UiCallback {
     protected Activity mActivity;
     protected Unbinder unbinder;
     protected Context mContext;
@@ -35,7 +38,7 @@ public class BaseFragment extends LazyFragment implements UiCallback {
     private Dialog dialog;
     protected View rootView;
     private Dialog loadingDialog;
-
+    protected static LoggerUtil loggerUtil;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,6 +66,7 @@ public class BaseFragment extends LazyFragment implements UiCallback {
         mActivity = activity;
         mContext = getAppComponent().getContext();
         mDataManager = getAppComponent().getDataManager();
+        loggerUtil=LoggerUtil.getLoggerUtil();
     }
 
     protected void showShortToast(String message) {
@@ -110,28 +114,32 @@ public class BaseFragment extends LazyFragment implements UiCallback {
             dialog = null;
         }
         BusFactory.getBus().unregister(this);
+        loggerUtil=null;
+        rootView=null;
+        clearDisposable();
+    }
+    private CompositeDisposable disposables;
+    /**
+     * 添加观察者
+     * @param disposable d
+     */
+    public void addDisposable(Disposable disposable){
+        if(disposables == null){
+            disposables = new CompositeDisposable();
+        }
+        disposables.add(disposable);
     }
 
-
-    @Override
-    public void initview() {
-
+    /**
+     * 注销观察者，防止泄露
+     */
+    public void clearDisposable(){
+        if(disposables != null){
+            disposables.clear();
+            disposables = null;
+        }
     }
 
-    @Override
-    public void initData() {
-
-    }
-
-    @Override
-    public void setListener() {
-
-    }
-
-    @Override
-    public int getLayoutId() {
-        return 0;
-    }
 
     @Override
     public boolean useEventBus() {

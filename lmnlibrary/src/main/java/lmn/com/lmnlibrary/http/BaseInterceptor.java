@@ -38,7 +38,7 @@ import okhttp3.Response;
 public class BaseInterceptor<T> implements Interceptor {
     private Context context;
     private Map<String, T> headers;
-
+    Request.Builder builder;
     public BaseInterceptor(Map<String, T> headers, Context context) {
         this.context = context;
         this.headers = headers;
@@ -53,7 +53,10 @@ public class BaseInterceptor<T> implements Interceptor {
         if(CommonConfig.DEBUG){
             Log.d("http_request", "intercept: request header="+request.url() + "/\r body="+request.body() );
         }
-        Request.Builder builder = request.newBuilder();
+        if (null!=builder){
+            builder=null;
+        }
+        builder = request.newBuilder();
         if (headers != null && headers.size() > 0) {
             Set<String> keys = headers.keySet();
             for (String headerKey : keys) {

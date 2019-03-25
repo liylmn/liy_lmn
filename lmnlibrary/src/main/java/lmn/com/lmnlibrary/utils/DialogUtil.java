@@ -26,7 +26,15 @@ public class DialogUtil {
      */
     public static Dialog createLoadingDialog(Activity context, String msg, DialogInterface.OnCancelListener listener) {
         final Dialog dialog = new Dialog(context, R.style.NoBackGroundDialog);
+        //失能焦点
+        NavigationBarUtil.focusNotAle(dialog.getWindow());
         dialog.show();
+        //显示虚拟栏的时候 隐藏
+        NavigationBarUtil.hideNavigationBar(dialog.getWindow());
+
+        //再清理失能焦点
+        NavigationBarUtil.clearFocusNotAle(dialog.getWindow());
+
         dialog.setCanceledOnTouchOutside(false);
         if (listener != null) dialog.setOnCancelListener(listener);
         Window window = dialog.getWindow();

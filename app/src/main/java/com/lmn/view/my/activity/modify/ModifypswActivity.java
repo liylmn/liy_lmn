@@ -123,6 +123,14 @@ public class ModifypswActivity extends BaseActivity implements ModifypswContract
                         showShortToast("请输入新密码");
                         return;
                     }
+                    if (etOldpsw.getText().toString().getBytes().length<6||etOldpsw.getText().toString().getBytes().length>10) {
+                        showShortToast("请输入6-10位旧密码");
+                        return;
+                    }
+                    if (etNewpsw.getText().toString().getBytes().length<6||etNewpsw.getText().toString().getBytes().length>10) {
+                        showShortToast("请输入6-10位新密码");
+                        return;
+                    }
                     modifypswPresenter.modify(mDataManager.getSPMapData().get("phone"),etOldpsw.getText().toString(),etNewpsw.getText().toString());
                 }else {
                     showShortToast("请不要重复点击");
